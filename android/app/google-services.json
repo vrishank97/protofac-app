@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "198462244740",
+    "project_id": "protofac-61bc1",
+    "storage_bucket": "protofac-61bc1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:198462244740:android:51f10c9e9dda36eccfbfd1",
+        "android_client_info": {
+          "package_name": "com.mitochondrial.protofac"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "198462244740-qu11int7aee75fga59qhhpsjbolats3q.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCX11kXntk_g81B7zFpO9OD35p6xCcPRvY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "198462244740-qu11int7aee75fga59qhhpsjbolats3q.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
