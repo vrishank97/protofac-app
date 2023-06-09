@@ -29,11 +29,11 @@ class Workflow_list extends StatelessWidget {
           Container(
             child: Row(children: [
               Text(
-                'Date: $date',
+                'Created at: $date',
                 style: TextStyle(fontFamily: 'Nunito', fontSize: 13),
               ),
               Container(
-                  padding: EdgeInsets.only(top: 10, left: 170),
+                  padding: EdgeInsets.only(top: 10, left: 140),
                   child: Icon(Icons.arrow_forward_ios, size: 15)),
             ]),
           ),
