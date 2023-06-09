@@ -33,7 +33,7 @@ class Workflow_list extends StatelessWidget {
                 style: TextStyle(fontFamily: 'Nunito', fontSize: 13),
               ),
               Container(
-                  padding: EdgeInsets.only(top: 10, left: 140),
+                  padding: EdgeInsets.only(top: 10, left: 80),
                   child: Icon(Icons.arrow_forward_ios, size: 15)),
             ]),
           ),

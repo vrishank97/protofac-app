@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:protofac/components/Workflow_list.dart';
+import 'package:intl/intl.dart';
 
 class Workflow_screen extends StatefulWidget {
   const Workflow_screen({super.key});
@@ -97,8 +98,8 @@ class _Workflow_screenState extends State<Workflow_screen> {
                         ? () {
                             if (_titleController.text.isNotEmpty) {
                               setState(() {
-                                DateTime currentDate = DateTime.now();
-                                String formattedDate = '${currentDate.day}/${currentDate.month}/${currentDate.year}';
+                                DateTime currentDate = DateTime.now().toLocal();
+                                String formattedDate =DateFormat('HH:mm:ss dd/MM/yyyy').format(currentDate);
                                 lists.add(Workflow_list(
                                     title: _titleController.text,
                                     date: formattedDate,
