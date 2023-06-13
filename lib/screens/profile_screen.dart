@@ -2,14 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:protofac/locator.dart';
 import 'package:protofac/services/user_service.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class Profile_screen extends StatefulWidget {
+  const Profile_screen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<Profile_screen> createState() => _Profile_screenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
+class _Profile_screenState extends State<Profile_screen> {
   final userService = getIt.get<UserService>();
 
   @override

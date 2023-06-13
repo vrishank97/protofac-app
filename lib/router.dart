@@ -1,11 +1,14 @@
+// ignore_for_file: unused_import
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:protofac/screens/home.dart';
-import 'package:protofac/screens/home_screen.dart';
+import 'package:protofac/screens/main_screen.dart';
 import 'package:protofac/screens/leaderboard_screen.dart';
+import 'package:protofac/screens/main_screen.dart';
 import 'package:protofac/screens/profile_screen.dart';
 import 'package:protofac/screens/signin_screen.dart';
-import 'package:protofac/screens/workflowform_screen.dart';
+import 'package:protofac/screens/workflow_screen.dart';
 import 'package:protofac/services/auth_service.dart';
 
 import 'locator.dart';
@@ -23,11 +26,11 @@ final GoRouter gorouter = GoRouter(
         routes: <RouteBase>[
           GoRoute(
             path: '/',
-            builder: (context, state) => HomeScreen(),
+            builder: (context, state) => const Main_screen(),
           ),
           GoRoute(
             path: '/profile',
-            builder: (context, state) => const ProfileScreen(),
+            builder: (context, state) => const Profile_screen(),
           ),
           GoRoute(
             path: '/leaderboard',
@@ -35,7 +38,7 @@ final GoRouter gorouter = GoRouter(
           ),
           GoRoute(
             path: '/buildworkflow',
-            builder: (context, state) => WorkflowFormScreen(),
+            builder: (context, state) => Workflow_screen(),
           ),
         ],
       )

@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, prefer_const_constructors_in_immutables, use_key_in_widget_constructors
+
 import 'package:flutter/material.dart';
 
 class Workflow_list extends StatelessWidget {
@@ -9,7 +11,7 @@ class Workflow_list extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return  Container(
       padding: EdgeInsets.all(16),
       margin: EdgeInsets.all(16),
       decoration: BoxDecoration(

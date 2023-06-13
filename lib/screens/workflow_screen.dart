@@ -1,8 +1,6 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
-
 import 'package:flutter/material.dart';
-import 'package:protofac/components/Workflow_list.dart';
 import 'package:intl/intl.dart';
+import 'package:protofac/components/Workflow_list.dart';
 
 class Workflow_screen extends StatefulWidget {
   const Workflow_screen({super.key});
@@ -12,16 +10,10 @@ class Workflow_screen extends StatefulWidget {
 }
 
 class _Workflow_screenState extends State<Workflow_screen> {
-  int _selectedIndex = 0;
+
   List<Workflow_list> lists = [
     Workflow_list(title: 'Title', date: '08/06/2023', tasksCompleted: 3),
   ];
-
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-    });
-  }
 
   void _addNewList() {
     TextEditingController _titleController = TextEditingController();
@@ -122,6 +114,7 @@ class _Workflow_screenState extends State<Workflow_screen> {
  
   }
 
+  
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -157,31 +150,15 @@ class _Workflow_screenState extends State<Workflow_screen> {
           Column(
             children: lists,
           ),
-        ],
+          
+        ], 
+        
       ),
-      floatingActionButton: FloatingActionButton.extended(
+       floatingActionButton: FloatingActionButton.extended(
         onPressed: _addNewList,
         icon: Icon(Icons.add),
         label: Text('Workflow'),
         backgroundColor: Color.fromRGBO(28, 105, 255, 1),
-      ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: [
-          BottomNavigationBarItem(
-            icon: Image.asset('assets/workflow.png', height: 17, width: 17),
-            label: 'Workflows',
-          ),
-          BottomNavigationBarItem(
-            icon: Image.asset('assets/report.png', height: 15, width: 15),
-            label: 'Report',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        onTap: _onItemTapped,
       ),
     );
   }

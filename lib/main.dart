@@ -6,8 +6,8 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:protofac/router.dart';
-import 'package:protofac/screens/workflow_screen.dart';
-import 'package:protofac/screens/workflowform_screen.dart';
+import 'package:protofac/screens/main_screen.dart';
+import 'package:protofac/screens/workflowformwidget.dart';
 import 'package:protofac/services/auth_service.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
@@ -45,7 +45,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: Workflow_screen(),
+      home:Main_screen(),
     );
   }
 }
