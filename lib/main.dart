@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:protofac/components/Workflow_list.dart';
 import 'package:protofac/router.dart';
 import 'package:protofac/screens/main_screen.dart';
+import 'package:protofac/screens/new_task_page.dart';
+import 'package:protofac/screens/report_screen.dart';
+import 'package:protofac/screens/task.dart';
 import 'package:protofac/screens/workflowformwidget.dart';
 import 'package:protofac/services/auth_service.dart';
 import 'package:provider/provider.dart';
@@ -45,7 +49,14 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      home:Main_screen(),
+      // home: Main_screen(),
+      routes: appRoutes,
     );
   }
 }
+
+Map<String, WidgetBuilder> appRoutes = {
+  "/": (context) => Main_screen(),
+  "/page2": (context) => Report_screen(),
+};
+

@@ -1,25 +1,26 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_field, prefer_final_fields, camel_case_types
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, unused_field, prefer_final_fields
 
 import 'package:flutter/material.dart';
 import 'package:protofac/components/Workflow_list.dart';
 import 'package:intl/intl.dart';
+import 'package:protofac/screens/new_task_page.dart';
 import 'package:protofac/screens/report_screen.dart';
 import 'package:protofac/screens/profile_screen.dart';
 import 'package:protofac/screens/task_screen.dart';
 import 'package:protofac/screens/workflow_screen.dart';
 
-class Main_screen extends StatefulWidget {
-  const Main_screen({super.key});
+class Task_screen extends StatefulWidget {
+  const Task_screen({super.key});
 
   @override
-  State<Main_screen> createState() => _Main_screenState();
+  State<Task_screen> createState() => _Task_screenState();
 }
 
-class _Main_screenState extends State<Main_screen>  with AutomaticKeepAliveClientMixin<Main_screen>{
+class _Task_screenState extends State<Task_screen> {
   int _selectedIndex = 0;
 
   List<Widget> _pages = [
-  Workflow_screen(),
+  NewTaskPage(),
   Report_screen(),
   Profile_screen(),
 ];
@@ -31,10 +32,7 @@ class _Main_screenState extends State<Main_screen>  with AutomaticKeepAliveClien
   }
 
   @override
-  bool get wantKeepAlive => true;
-
   Widget build(BuildContext context) {
-    super.build(context);
     return Scaffold(
       body: _pages[ _selectedIndex],
        bottomNavigationBar: BottomNavigationBar(

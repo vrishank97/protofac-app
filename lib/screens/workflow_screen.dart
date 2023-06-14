@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, camel_case_types, no_leading_underscores_for_local_identifiers, avoid_unnecessary_containers, sized_box_for_whitespace, unused_field
+
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:protofac/components/Workflow_list.dart';
@@ -11,9 +13,7 @@ class Workflow_screen extends StatefulWidget {
 
 class _Workflow_screenState extends State<Workflow_screen> {
 
-  List<Workflow_list> lists = [
-    Workflow_list(title: 'Title', date: '08/06/2023', tasksCompleted: 3),
-  ];
+  List<Workflow_list> lists = [];
 
   void _addNewList() {
     TextEditingController _titleController = TextEditingController();
@@ -95,7 +95,8 @@ class _Workflow_screenState extends State<Workflow_screen> {
                                 lists.add(Workflow_list(
                                     title: _titleController.text,
                                     date: formattedDate,
-                                    tasksCompleted: 0));
+                                    tasksCompleted: 0
+                                    ));
                               });
                               Navigator.pop(context);
                             }
