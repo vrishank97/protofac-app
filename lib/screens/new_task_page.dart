@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:protofac/screens/main_screen.dart';
-import 'task.dart';
+import '../components/task.dart';
 
 // A widget for creating a new task
 class NewTaskPage extends StatefulWidget {
