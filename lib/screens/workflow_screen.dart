@@ -112,9 +112,7 @@ class _Workflow_screenState extends State<Workflow_screen> {
         );
       },
     );
- 
   }
-
   
   @override
   Widget build(BuildContext context) {
@@ -151,10 +149,9 @@ class _Workflow_screenState extends State<Workflow_screen> {
           Column(
             children: lists,
           ),
-          
         ], 
-        
       ),
+
        floatingActionButton: FloatingActionButton.extended(
         onPressed: _addNewList,
         icon: Icon(Icons.add),
