@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, avoid_types_as_parameter_names
+
 import 'package:flutter/material.dart';
 
 // A model class for a task

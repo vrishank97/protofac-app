@@ -10,7 +10,7 @@ import 'package:protofac/router.dart';
 import 'package:protofac/screens/main_screen.dart';
 import 'package:protofac/screens/new_task_page.dart';
 import 'package:protofac/screens/report_screen.dart';
-import 'package:protofac/screens/task.dart';
+import 'package:protofac/components/task.dart';
 import 'package:protofac/screens/workflowformwidget.dart';
 import 'package:protofac/services/auth_service.dart';
 import 'package:provider/provider.dart';

@@ -8,6 +8,7 @@ import 'package:protofac/screens/report_screen.dart';
 import 'package:protofac/screens/profile_screen.dart';
 import 'package:protofac/screens/task_screen.dart';
 import 'package:protofac/screens/workflow_screen.dart';
+import 'package:protofac/screens/workflow_task.dart';
 
 class Task_screen extends StatefulWidget {
   const Task_screen({super.key});
@@ -20,7 +21,7 @@ class _Task_screenState extends State<Task_screen> {
   int _selectedIndex = 0;
 
   List<Widget> _pages = [
-  NewTaskPage(),
+  Workflow_Task(),
   Report_screen(),
   Profile_screen(),
 ];
