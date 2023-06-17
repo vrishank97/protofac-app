@@ -20,7 +20,6 @@ class Workflow_list extends StatefulWidget {
 }
 
 class _Workflow_listState extends State<Workflow_list> {
-  
   bool change_screen = false;
 
   void changeScreen() async {
@@ -33,54 +32,52 @@ class _Workflow_listState extends State<Workflow_list> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        padding: EdgeInsets.all(16),
-        margin: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Colors.grey[200],
-          borderRadius: BorderRadius.circular(10),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              widget.title,
-              style: TextStyle(
-                  fontFamily: 'Nunito',
-                  fontSize: 13,
-                  fontWeight: FontWeight.bold),
-            ),
-            Container(
-              child: Row(children: [
-                Text(
-                  'Created at: ${widget.date}',
-                  style: TextStyle(fontFamily: 'Nunito', fontSize: 13),
-                ),
-                Container(
-                  padding: EdgeInsets.only(top: 10, left: 50),
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_forward_ios,
-                      size: 15,
-                    ),
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (context) => Task_screen()),
-                      );
-                    },
+    return Container(
+      padding: EdgeInsets.all(16),
+      margin: EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.grey[200],
+        borderRadius: BorderRadius.circular(10),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            widget.title,
+            style: TextStyle(
+                fontFamily: 'Nunito',
+                fontSize: 13,
+                fontWeight: FontWeight.bold),
+          ),
+          Container(
+            child: Row(children: [
+              Text(
+                'Created at: ${widget.date}',
+                style: TextStyle(fontFamily: 'Nunito', fontSize: 13),
+              ),
+              Container(
+                padding: EdgeInsets.only(top: 10, left: 50),
+                child: IconButton(
+                  icon: Icon(
+                    Icons.arrow_forward_ios,
+                    size: 15,
                   ),
-                )
-              ]),
-            ),
-            SizedBox(height: 24),
-            Text(
-              'Task Completed: ${widget.tasksCompleted}',
-              style: TextStyle(fontFamily: 'Nunito', fontSize: 13),
-            ),
-          ],
-        ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Task_screen()),
+                    );
+                  },
+                ),
+              )
+            ]),
+          ),
+          SizedBox(height: 24),
+          Text(
+            'Task Completed: ${widget.tasksCompleted}',
+            style: TextStyle(fontFamily: 'Nunito', fontSize: 13),
+          ),
+        ],
       ),
     );
   }
