@@ -1,18 +1,18 @@
-// ignore_for_file: library_private_types_in_public_api, prefer_const_constructors
+// ignore_for_file: library_private_types_in_public_api, prefer_const_constructors, no_logic_in_create_state
 
 import 'package:flutter/material.dart';
 import '../components/task.dart';
 import './new_task_page.dart';
 
 // A widget for displaying the workflow page
-class WorkflowPage extends StatefulWidget {
-  const WorkflowPage({Key? key}) : super(key: key);
+class Workflow_Task extends StatefulWidget {
+  const Workflow_Task({Key? key}) : super(key: key);
 
   @override
-  _WorkflowPageState createState() => _WorkflowPageState();
+  _Workflow_TaskState createState() => _Workflow_TaskState();
 }
 
-class _WorkflowPageState extends State<WorkflowPage> {
+class _Workflow_TaskState extends State<Workflow_Task> {
   // A list of tasks to display
   List<Task> tasks = [];
 
