@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
@@ -5,7 +7,8 @@ import 'package:flutter/material.dart';
 
 class AddTaskAlertDialog extends StatefulWidget {
   final String projectId;
-  const AddTaskAlertDialog({Key? key, required this.projectId}) : super(key: key);
+  const AddTaskAlertDialog({Key? key, required this.projectId})
+      : super(key: key);
 
   @override
   State<AddTaskAlertDialog> createState() => _AddTaskAlertDialogState();
@@ -14,9 +17,12 @@ class AddTaskAlertDialog extends StatefulWidget {
 class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
   final TextEditingController taskNameController = TextEditingController();
   final TextEditingController taskDescController = TextEditingController();
-  final List<String> taskTags = ['Work', 'School', 'Other'];
+  final Map<String, Color> taskTags = {
+    'To START': Color.fromRGBO(225, 225, 225, 1),
+    'PROGRESS': Color.fromRGBO(255, 251, 161, 1),
+    'DONE': Colors.green,
+  };
   late String selectedValue = '';
-
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +51,8 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                   ),
                   hintText: 'Task',
                   hintStyle: const TextStyle(fontSize: 14),
-                  icon: const Icon(CupertinoIcons.square_list, color: Colors.brown),
+                  icon: const Icon(CupertinoIcons.square_list,
+                      color: Colors.brown),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -64,7 +71,8 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                   ),
                   hintText: 'Description',
                   hintStyle: const TextStyle(fontSize: 14),
-                  icon: const Icon(CupertinoIcons.bubble_left_bubble_right, color: Colors.brown),
+                  icon: const Icon(CupertinoIcons.bubble_left_bubble_right,
+                      color: Colors.brown),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -96,20 +104,22 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                       // ),
                       // validator: (value) => value == null
                       //     ? 'Please select the task tag' : null,
-                      items: taskTags
+                      items: taskTags.entries
                           .map(
-                            (item) => DropdownMenuItem<String>(
-                              value: item,
+                            (entry) => DropdownMenuItem<String>(
+                              value: entry.key,
                               child: Text(
-                                item,
-                                style: const TextStyle(
+                                entry.key,
+                                style: TextStyle(
                                   fontSize: 14,
+                                  color: entry.value,
                                 ),
                               ),
                             ),
                           )
                           .toList(),
-                      onChanged: (String? value) => setState(() {
+                      onChanged: (String? value) => setState(
+                        () {
                           if (value != null) selectedValue = value;
                         },
                       ),
@@ -145,8 +155,15 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
     );
   }
 
- Future _addTasks({required String taskName, required String taskDesc, required String taskTag}) async {
-    DocumentReference docRef = await FirebaseFirestore.instance.collection('projects').doc(widget.projectId).collection('tasks').add(
+  Future _addTasks(
+      {required String taskName,
+      required String taskDesc,
+      required String taskTag}) async {
+    DocumentReference docRef = await FirebaseFirestore.instance
+        .collection('projects')
+        .doc(widget.projectId)
+        .collection('tasks')
+        .add(
       {
         'taskName': taskName,
         'taskDesc': taskDesc,
@@ -155,12 +172,17 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
       },
     );
     String taskId = docRef.id;
-    await FirebaseFirestore.instance.collection('projects').doc(widget.projectId).collection('tasks').doc(taskId).update(
+    await FirebaseFirestore.instance
+        .collection('projects')
+        .doc(widget.projectId)
+        .collection('tasks')
+        .doc(taskId)
+        .update(
       {'id': taskId},
     );
     _clearAll();
   }
-  
+
   void _clearAll() {
     taskNameController.text = '';
     taskDescController.text = '';
