@@ -6,7 +6,6 @@ class DeleteTaskDialog extends StatefulWidget {
   final String taskId, taskName;
 
   const DeleteTaskDialog({Key? key, required this.taskId, required this.taskName}) : super(key: key);
-
   @override
   State<DeleteTaskDialog> createState() => _DeleteTaskDialogState();
 }

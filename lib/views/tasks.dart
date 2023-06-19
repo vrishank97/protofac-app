@@ -151,27 +151,37 @@ class _ProjectsState extends State<Projects> {
                     return const Text('Loading');
                   }
                   return Column(
-  children: snapshot.data!.docs.map((doc) {
-    final projectData = doc.data() as Map<String, dynamic>;
-    return StreamBuilder<QuerySnapshot>(
-      stream: FirebaseFirestore.instance.collection('projects').doc(doc.id).collection('tasks').snapshots(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> taskSnapshot) {
-        int taskCount = 0;
-        if (taskSnapshot.hasData) {
-          taskCount = taskSnapshot.data!.docs.length;
-        }
-        return ProjectCard(
-          projectId: doc.id,
-          projectName: projectData['projectName'],
-          taskCount: taskCount,
-          createdAt: ((projectData['createdAt'] as Timestamp?) ?? Timestamp.now()).toDate(),
-          updatedAt: ((projectData['updatedAt'] as Timestamp?) ?? Timestamp.now()).toDate(),
-        );
-      },
-    );
-  }).toList(),
-);
-
+                    children: snapshot.data!.docs.map((doc) {
+                      final projectData = doc.data() as Map<String, dynamic>;
+                      return StreamBuilder<QuerySnapshot>(
+                        stream: FirebaseFirestore.instance
+                            .collection('projects')
+                            .doc(doc.id)
+                            .collection('tasks')
+                            .snapshots(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<QuerySnapshot> taskSnapshot) {
+                          int taskCount = 0;
+                          if (taskSnapshot.hasData) {
+                            taskCount = taskSnapshot.data!.docs.length;
+                          }
+                          return ProjectCard(
+                            projectId: doc.id,
+                            projectName: projectData['projectName'],
+                            taskCount: taskCount,
+                            createdAt:
+                                ((projectData['createdAt'] as Timestamp?) ??
+                                        Timestamp.now())
+                                    .toDate(),
+                            updatedAt:
+                                ((projectData['updatedAt'] as Timestamp?) ??
+                                        Timestamp.now())
+                                    .toDate(),
+                          );
+                        },
+                      );
+                    }).toList(),
+                  );
                 },
               ),
             ],
@@ -205,7 +215,7 @@ class ProjectCard extends StatelessWidget {
   });
 
   @override
-   Widget build(BuildContext context) {
+  Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
       decoration: BoxDecoration(
@@ -267,7 +277,6 @@ class ProjectCard extends StatelessWidget {
           size: 14,
           color: Colors.black,
         ),
-
         onTap: () {
           Navigator.push(
             context,

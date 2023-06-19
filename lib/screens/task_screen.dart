@@ -17,7 +17,7 @@ class _Task_screenState extends State<Task_screen> {
   int _selectedIndex = 0;
 
   List<Widget> _pages = [
-  ProjectTasksPage(projectId: '',projectName: '',),
+  ProjectTasksPage(projectId: '', projectName: '',),
   Report_screen(),
   Profile_screen(),
 ];
