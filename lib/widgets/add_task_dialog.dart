@@ -151,6 +151,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
         'taskName': taskName,
         'taskDesc': taskDesc,
         'taskTag': taskTag,
+        'created_at': DateTime.now().toLocal(),
       },
     );
     String taskId = docRef.id;

@@ -1,28 +1,31 @@
-// ignore_for_file: avoid_unnecessary_containers
+// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:new_protofac/widgets/add_task_dialog.dart';
+import 'package:intl/intl.dart';
 
 class TaskCard extends StatelessWidget {
   final String taskId;
   final String taskName;
   final String taskTag;
+  final String created_at;
 
   TaskCard({
     required this.taskId,
     required this.taskName,
     required this.taskTag,
+    required this.created_at,
   });
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-      padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 12.0),
+      margin: const EdgeInsets.symmetric(vertical: 12.0, horizontal: 16.0),
+      padding: const EdgeInsets.symmetric(horizontal: 20.0, vertical: 16.0),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16.0),
+        color: Color(0xFFF6F8FD),
+        borderRadius: BorderRadius.circular(20.0),
         boxShadow: [
           BoxShadow(
             color: Colors.black12,
@@ -34,12 +37,12 @@ class TaskCard extends StatelessWidget {
       ),
       child: Row(
         children: [
-          Checkbox(
-            value: false,
-            onChanged: (bool? newValue) {
-              // Handle the checkbox value change here
-            },
+          Icon(
+            Icons.check_circle,
+            color: Color(0xFF1C69FF),
+            size: 24,
           ),
+          SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -47,27 +50,51 @@ class TaskCard extends StatelessWidget {
                 Text(
                   taskName,
                   style: TextStyle(
-                    color: Colors.black,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 22.0,
+                    color: Color(0xFF1C69FF),
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18.0,
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(top: 8.0),
+                  padding: const EdgeInsets.only(top: 4.0),
                   child: Container(
-                    padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                     decoration: BoxDecoration(
-                      color: Colors.blue.shade100,
+                      color: Color(0xFF1C69FF).withOpacity(0.2),
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                     child: Text(
                       taskTag,
                       style: TextStyle(
-                        color: Colors.blue,
+                        color: Color(0xFF1C69FF),
                         fontWeight: FontWeight.w500,
                         fontSize: 14.0,
                       ),
                     ),
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(top: 8.0),
+                  child: Row(
+                    children: [
+                      Text(
+                        'Created At: ',
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.6),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.0,
+                        ),
+                      ),
+                      Text(
+                        created_at,
+                        style: TextStyle(
+                          color: Colors.black.withOpacity(0.6),
+                          fontWeight: FontWeight.w500,
+                          fontSize: 14.0,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ],
@@ -90,7 +117,9 @@ class ProjectTasksPage extends StatefulWidget {
   final String projectId;
   final String projectName;
 
-  ProjectTasksPage({Key? key, required this.projectId, required this.projectName}) : super(key: key);
+  ProjectTasksPage(
+      {Key? key, required this.projectId, required this.projectName})
+      : super(key: key);
 
   @override
   _ProjectTasksPageState createState() => _ProjectTasksPageState();
@@ -106,26 +135,30 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
           children: [
             Container(
               height: 60,
-              color: Color(0xFF1C69FF),
+              // color: Colors.white,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
+                  Padding(padding: const EdgeInsets.only(left: 16.0)),
                   IconButton(
-                    icon: Icon(Icons.arrow_back, color: Colors.white),
+                    icon: Icon(Icons.arrow_back, color: Colors.black),
                     onPressed: () => Navigator.pop(context),
                   ),
+                  SizedBox(width: 10),
                   Text(
-                    widget.projectName,
+                    'Workflows',                 
+                    selectionColor: Colors.black,
                     style: TextStyle(
-                      color: Colors.white,
+                      color: Colors.black,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
+                      
                     ),
                   ),
                   SizedBox(width: 48),
                 ],
               ),
             ),
+           
             Expanded(
               child: Container(
                 padding: EdgeInsets.all(16.0),
@@ -136,7 +169,8 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
                       .doc(widget.projectId)
                       .collection('tasks')
                       .get(),
-                  builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                  builder: (BuildContext context,
+                      AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasError) {
                       return const Text('Something went wrong');
                     }
@@ -152,13 +186,15 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
                     return ListView.builder(
                       itemCount: snapshot.data!.docs.length,
                       itemBuilder: (BuildContext context, int index) {
-                        final taskData =
-                            snapshot.data!.docs[index].data() as Map<String, dynamic>;
+                        final taskData = snapshot.data!.docs[index].data()
+                            as Map<String, dynamic>;
 
                         return TaskCard(
                           taskId: snapshot.data!.docs[index].id,
                           taskName: taskData['taskName'],
                           taskTag: taskData['taskTag'],
+                          created_at: DateFormat('dd/MM/yyyy')
+                              .format(taskData['created_at']?.toDate() ?? DateTime.now()),
                         );
                       },
                     );
@@ -181,7 +217,8 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
           onPressed: () {
             showDialog(
               context: context,
-              builder: (context) => AddTaskAlertDialog(projectId: widget.projectId),
+              builder: (context) =>
+                  AddTaskAlertDialog(projectId: widget.projectId),
             );
           },
         ),
