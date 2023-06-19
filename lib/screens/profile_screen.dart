@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 
-class Porfile_screen extends StatefulWidget {
-  const Porfile_screen({super.key});
+class Profile_screen extends StatefulWidget {
+  const Profile_screen({super.key});
 
   @override
-  State<Porfile_screen> createState() => _Porfile_screenState();
+  State<Profile_screen> createState() => _Profile_screenState();
 }
 
-class _Porfile_screenState extends State<Porfile_screen> {
+class _Profile_screenState extends State<Profile_screen> {
   @override
   Widget build(BuildContext context) {
     return Container(

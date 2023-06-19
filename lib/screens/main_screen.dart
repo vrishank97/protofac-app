@@ -19,7 +19,7 @@ class _Main_screenState extends State<Main_screen>
   List<Widget> _pages = [
     HomeScreen(),
     Report_screen(),
-    Porfile_screen(),
+    Profile_screen(),
   ];
 
   void _onItemTapped(int index) {
