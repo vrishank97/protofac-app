@@ -1,4 +1,4 @@
-// ignore_for_file: avoid_print, sort_child_properties_last, avoid_unnecessary_containers
+// ignore_for_file: avoid_print, sort_child_properties_last, avoid_unnecessary_containers, unnecessary_import
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
