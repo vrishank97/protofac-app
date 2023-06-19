@@ -1,3 +1,5 @@
+// ignore_for_file: avoid_print, sort_child_properties_last, avoid_unnecessary_containers
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -24,8 +26,9 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
       body: Container(
         child: StreamBuilder<QuerySnapshot>(
           stream: FirebaseFirestore.instance
+              .collection('projects')
+              .doc(widget.projectId)
               .collection('tasks')
-              .where('projectId', isEqualTo: widget.projectId)
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -37,9 +40,12 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
               return const CircularProgressIndicator();
             }
 
+            print(snapshot.data!.docs);
+
             if (snapshot.data!.docs.isEmpty) {
               return const Text("No tasks found for this project.");
             }
+
             print(snapshot.data!.docs.length);
             return ListView.builder(
               itemCount: snapshot.data!.docs.length,
