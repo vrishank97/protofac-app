@@ -4,9 +4,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class AddTaskAlertDialog extends StatefulWidget {
-  const AddTaskAlertDialog({
-    Key? key,
-  }) : super(key: key);
+  final String projectId;
+  const AddTaskAlertDialog({Key? key, required this.projectId}) : super(key: key);
 
   @override
   State<AddTaskAlertDialog> createState() => _AddTaskAlertDialogState();
@@ -17,6 +16,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
   final TextEditingController taskDescController = TextEditingController();
   final List<String> taskTags = ['Work', 'School', 'Other'];
   late String selectedValue = '';
+
 
   @override
   Widget build(BuildContext context) {
@@ -145,8 +145,8 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
     );
   }
 
-  Future _addTasks({required String taskName, required String taskDesc, required String taskTag}) async {
-    DocumentReference docRef = await FirebaseFirestore.instance.collection('tasks').add(
+ Future _addTasks({required String taskName, required String taskDesc, required String taskTag}) async {
+    DocumentReference docRef = await FirebaseFirestore.instance.collection('projects').doc(widget.projectId).collection('tasks').add(
       {
         'taskName': taskName,
         'taskDesc': taskDesc,
@@ -154,12 +154,12 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
       },
     );
     String taskId = docRef.id;
-    await FirebaseFirestore.instance.collection('tasks').doc(taskId).update(
+    await FirebaseFirestore.instance.collection('projects').doc(widget.projectId).collection('tasks').doc(taskId).update(
       {'id': taskId},
     );
     _clearAll();
   }
-
+  
   void _clearAll() {
     taskNameController.text = '';
     taskDescController.text = '';

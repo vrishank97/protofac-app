@@ -1,8 +1,8 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../widgets/add_task_dialog.dart';
-import 'tasks.dart';
 import 'categories.dart';
+import 'tasks.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({Key? key}) : super(key: key);
@@ -35,7 +35,7 @@ class _HomeScreenState extends State<HomeScreen> {
           showDialog(
             context: context,
             builder: (BuildContext context) {
-              return const AddTaskAlertDialog();
+              return const AddTaskAlertDialog(projectId: '',);
             },
           );
         },
@@ -74,7 +74,7 @@ class _HomeScreenState extends State<HomeScreen> {
         controller: pageController,
         children: const <Widget>[
           Center(
-            child: Tasks(),
+            child: Projects(),
           ),
           Center(
             child: Categories(),

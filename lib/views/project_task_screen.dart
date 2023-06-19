@@ -1,3 +1,6 @@
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
+import '../widgets/add_task_dialog.dart';
 // ignore_for_file: unnecessary_import
 
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -5,24 +8,29 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 import '../utils/colors.dart';
-import '../widgets/add_task_dialog.dart';
 import '../widgets/delete_task_dialog.dart';
 import '../widgets/update_task_dialog.dart';
-import 'add_project.dart';
 
-class Projects extends StatefulWidget {
-  const Projects({Key? key}) : super(key: key);
+
+class ProjectTasksPage extends StatefulWidget {
+  final String projectId;
+  final String projectName;
+
+  const ProjectTasksPage({Key? key, required this.projectId, required this.projectName}) : super(key: key);
+
   @override
-  State<Projects> createState() => _ProjectsState();
+  State<ProjectTasksPage> createState() => _ProjectTasksPageState();
 }
 
-class _ProjectsState extends State<Projects> {
-  final fireStore = FirebaseFirestore.instance;
-
+class _ProjectTasksPageState extends State<ProjectTasksPage> {
   @override
+    final fireStore = FirebaseFirestore.instance;
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
+      appBar: AppBar(
+        title: Text(widget.projectName),
+      ),
+        body: Container(
         margin: const EdgeInsets.all(10.0),
         child: StreamBuilder<QuerySnapshot>(
           stream: fireStore.collection('projects').snapshots(),
@@ -181,12 +189,11 @@ class _ProjectsState extends State<Projects> {
           },
         ),
       ),
-      
-      floatingActionButton: FloatingActionButton(
+            floatingActionButton: FloatingActionButton(
         onPressed: () {
           showDialog(
             context: context,
-            builder: (context) => AddProjectAlertDialog(),
+            builder: (context) => AddTaskAlertDialog(projectId: widget.projectId),
           );
         },
         child: const Icon(Icons.add),
