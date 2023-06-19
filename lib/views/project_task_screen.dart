@@ -204,25 +204,18 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
           ],
         ),
       ),
-      floatingActionButton: Container(
-        height: 56,
-        width: 56,
-        decoration: BoxDecoration(
-          color: Color(0xFF1C69FF),
-          borderRadius: BorderRadius.circular(28),
-        ),
-        child: IconButton(
-          icon: Icon(Icons.add, color: Colors.white),
-          onPressed: () {
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: () {
             showDialog(
               context: context,
               builder: (context) =>
                   AddTaskAlertDialog(projectId: widget.projectId),
             );
-          },
-        ),
+          },// Update the onPressed to call _addNewProject
+        icon: Icon(Icons.add),
+        label: Text('Task'),
+        backgroundColor: Color.fromRGBO(28, 105, 255, 1),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
     );
   }
 }
