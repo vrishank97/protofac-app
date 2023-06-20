@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors_in_immutables, use_build_context_synchronously, avoid_print
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors_in_immutables, use_build_context_synchronously, avoid_print, prefer_final_fields
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -16,8 +16,8 @@ class UpdateTaskPage extends StatefulWidget {
 class _UpdateTaskPageState extends State<UpdateTaskPage> {
   TextEditingController taskNameController = TextEditingController();
   TextEditingController taskTagController = TextEditingController();
-  final TextEditingController _controller = TextEditingController();
-  double _value = 0;
+  TextEditingController _controller = TextEditingController();
+  double _currentSlidervalue = 0;
   int?
       _totalUnits; // Create a nullable variable to store the total number of units
 
@@ -25,7 +25,8 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
   void initState() {
     super.initState();
     _controller.addListener(_updateSliderValue);
-    _fetchTotalUnits(); // Fetch the total units from Firestore when the widget is initialized
+    _fetchTotalUnits();
+    _fetchCompletedUnits(); // Fetch the total units from Firestore when the widget is initialized
   }
 
   @override
@@ -35,14 +36,35 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
     super.dispose();
   }
 
+  Future<void> _fetchCompletedUnits() async {
+    try {
+      DocumentSnapshot taskSnapshot = await FirebaseFirestore.instance
+          .collection('projects')
+          .doc(widget.projectId)
+          .collection('tasks')
+          .doc(widget.taskId)
+          .get();
+
+      if (taskSnapshot.exists) {
+        double? completedUnits =
+            (taskSnapshot.data() as Map<String, dynamic>)?['completedUnits'];
+        if (completedUnits != null) {
+          _controller.text = completedUnits.toString();
+        }
+      }
+    } catch (e) {
+      print('Error fetching completed units: $e');
+    }
+  }
+
   void _updateSliderValue() {
     double newValue = double.tryParse(_controller.text) ?? 0;
-    if (newValue <= _totalUnits!) {
+    if (newValue <= (_totalUnits ?? 0)) {
       setState(() {
-        _value = newValue;
+        _currentSlidervalue = newValue;
       });
     } else {
-      _controller.text = _value.toString();
+      _controller.text = _currentSlidervalue.toString();
     }
   }
 
@@ -53,6 +75,22 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
         .collection('tasks')
         .doc(widget.taskId)
         .snapshots();
+  }
+
+  Future<void> _updateCompletedUnits(double newValue) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('projects')
+          .doc(widget.projectId)
+          .collection('tasks')
+          .doc(widget.taskId)
+          .update({
+        'completedUnits': newValue,
+      });
+      print('Completed units updated successfully');
+    } catch (e) {
+      print('Error updating completed units: $e');
+    }
   }
 
   void _updateTask() async {
@@ -288,7 +326,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text(
+                      Text(
                         'Completed Units',
                         style: TextStyle(
                           fontSize: 14,
@@ -305,7 +343,14 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                             width: 148,
                             height: 40,
                             child: TextFormField(
-                              // ...
+                              controller: _controller,
+                              onChanged: (value) async {
+                                _updateSliderValue();
+                                double newValue = double.tryParse(value) ?? 0;
+                                if (newValue <= (_totalUnits ?? 0)) {
+                                  await _updateCompletedUnits(newValue);
+                                }
+                              },
                               validator: (value) {
                                 double? enteredValue =
                                     double.tryParse(value ?? '');
@@ -316,6 +361,9 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                                 }
                                 return null;
                               },
+                              decoration: InputDecoration(
+                                hintText: 'Please enter a value',
+                              ),
                             ),
                           ),
                           StreamBuilder<DocumentSnapshot>(
@@ -325,7 +373,6 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                               if (snapshot.hasError) {
                                 return Text('Error: ${snapshot.error}');
                               }
-
                               if (snapshot.connectionState ==
                                       ConnectionState.active &&
                                   snapshot.hasData) {
@@ -391,13 +438,17 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                             ),
                           ),
                           child: Slider(
-                              min: 0,
-                              value: _value,
-                              onChanged: (value) {
-                                setState(() {
-                                  _value = value;
-                                });
-                              }),
+                            value: _currentSlidervalue,
+                            min: 0,
+                            max: _totalUnits != null
+                                ? _totalUnits!.toDouble()
+                                : 100,
+                            onChanged: (double newValue) {
+                              setState(() {
+                                _currentSlidervalue = newValue;
+                              });
+                            },
+                          ),
                         ),
                       ),
                     ],
