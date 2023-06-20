@@ -133,36 +133,65 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                           fontFamily: 'Nunito'),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  SizedBox(height: 20),
                   Row(
                     children: [
                       Expanded(
-                        child: ListTile(
-                          title: Text(
-                            selectedStartDate == null
-                                ? 'Select a start date'
-                                : 'Start Date: ${DateFormat('dd/MM/yyyy').format(selectedStartDate!)}',
-                            style: const TextStyle(fontSize: 14),
-                          ),
+                        child: InkWell(
                           onTap: () => _selectStartDate(context),
-                        ),
-                      ),
-                      Expanded(
-                        child: ListTile(
-                          title: Text(
-                            selectedEndDate == null
-                                ? 'Select an end date'
-                                : 'End Date: ${DateFormat('dd/MM/yyyy').format(selectedEndDate!)}',
-                            style: const TextStyle(fontSize: 14),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              border: Border.all(color: Colors.grey.shade300),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  selectedStartDate == null
+                                      ? 'Select a start date'
+                                      : 'Start Date: ${DateFormat('dd/MM/yyyy').format(selectedStartDate!)}',
+                                  style: TextStyle(fontSize: 11),
+                                ),
+                                const Icon(CupertinoIcons.calendar,
+                                    color: Colors.brown),
+                              ],
+                            ),
                           ),
-                          onTap: () => _selectEndDate(context),
                         ),
                       ),
+                              SizedBox(width: 10),
+                      Expanded(
+          child: InkWell(
+            onTap: () => _selectEndDate(context),
+            child: Container(
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(40),
+                border: Border.all(color: Colors.grey.shade300),
+              ),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    selectedEndDate == null
+                        ? 'Select an end date'
+                        : 'End Date: ${DateFormat('dd/MM/yyyy').format(selectedEndDate!)}',
+                    style: TextStyle(fontSize: 10),
+                  ),
+                  const Icon(CupertinoIcons.calendar, color: Colors.brown),
+                ],
+              ),
+            ),
+          ),
+        ),
                     ],
                   ),
                 ],
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 25),
               Row(
                 children: <Widget>[
                   const Icon(CupertinoIcons.tag, color: Colors.brown),
@@ -204,7 +233,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                   ),
                 ],
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
