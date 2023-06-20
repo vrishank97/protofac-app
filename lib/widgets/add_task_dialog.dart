@@ -162,31 +162,33 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                           ),
                         ),
                       ),
-                              SizedBox(width: 10),
+                      SizedBox(width: 10),
                       Expanded(
-          child: InkWell(
-            onTap: () => _selectEndDate(context),
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(40),
-                border: Border.all(color: Colors.grey.shade300),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    selectedEndDate == null
-                        ? 'Select an end date'
-                        : 'End Date: ${DateFormat('dd/MM/yyyy').format(selectedEndDate!)}',
-                    style: TextStyle(fontSize: 10),
-                  ),
-                  const Icon(CupertinoIcons.calendar, color: Colors.brown),
-                ],
-              ),
-            ),
-          ),
-        ),
+                        child: InkWell(
+                          onTap: () => _selectEndDate(context),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              border: Border.all(color: Colors.grey.shade300),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  selectedEndDate == null
+                                      ? 'Select an end date'
+                                      : 'End Date: ${DateFormat('dd/MM/yyyy').format(selectedEndDate!)}',
+                                  style: TextStyle(fontSize: 11),
+                                ),
+                                const Icon(CupertinoIcons.calendar,
+                                    color: Colors.brown),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
                     ],
                   ),
                 ],
@@ -237,17 +239,8 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.grey,
-                    ),
-                    child: const Text('Cancel'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
+                  InkWell(
+                    onTap: () {
                       final taskName = taskNameController.text;
                       final taskDesc = taskDescController.text;
                       final taskTag = selectedValue;
@@ -269,10 +262,32 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                         );
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.brown,
+                    child: Container(
+                      height: 45,
+                      width: 300,
+                      margin: EdgeInsets.only(left: 15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromRGBO(28, 105, 255, 1),
+                            Color.fromRGBO(66, 143, 255, 1),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Create Task',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
                     ),
-                    child: const Text('Add Task'),
                   ),
                 ],
               ),
