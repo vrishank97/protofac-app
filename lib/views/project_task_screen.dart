@@ -206,11 +206,12 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-            showDialog(
-              context: context,
-              builder: (context) =>
-                  AddTaskAlertDialog(projectId: widget.projectId),
-            );
+         Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => AddTaskAlertDialog(projectId: widget.projectId),
+      ),
+    );
           },// Update the onPressed to call _addNewProject
         icon: Icon(Icons.add),
         label: Text('Task'),
