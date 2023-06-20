@@ -1,17 +1,21 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, avoid_print, library_private_types_in_public_api
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:new_protofac/widgets/add_task_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:new_protofac/widgets/delete_task_dialog.dart';
+import 'package:new_protofac/widgets/update_task_dialog.dart';
 
 class TaskCard extends StatelessWidget {
+  final String projectId;
   final String taskId;
   final String taskName;
   final String taskTag;
   final String created_at;
 
   TaskCard({
+    required this.projectId,
     required this.taskId,
     required this.taskName,
     required this.taskTag,
@@ -101,7 +105,14 @@ class TaskCard extends StatelessWidget {
           ),
           InkWell(
             onTap: () {
-            
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UpdateTaskPage(
+                          projectId: projectId,
+                          taskId: taskId,
+                        )),
+              );
               print('Icon tapped');
             },
             child: Icon(
@@ -113,13 +124,13 @@ class TaskCard extends StatelessWidget {
           IconButton(
             icon: Icon(Icons.delete, color: Colors.red),
             onPressed: () {
-                Navigator.push(
+              Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (context) => DeleteTaskDialog(
-                        taskId: taskId,
-                        taskName: taskName,
-                    )),
+                    builder: (context) => DeleteTaskPage(
+                          projectId: projectId,
+                          taskId: taskId,
+                        )),
               );
             },
           )
@@ -206,6 +217,7 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
                             as Map<String, dynamic>;
 
                         return TaskCard(
+                          projectId: widget.projectId,
                           taskId: snapshot.data!.docs[index].id,
                           taskName: taskData['taskName'],
                           taskTag: taskData['taskTag'],
