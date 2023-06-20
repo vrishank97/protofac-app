@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures
+// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -17,7 +17,7 @@ class AddTaskAlertDialog extends StatefulWidget {
 
 class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
   final TextEditingController taskNameController = TextEditingController();
-  final TextEditingController taskDescController = TextEditingController();
+  final TextEditingController targetUnitsController = TextEditingController();
   final Map<String, Color> taskTags = {
     'To START': Colors.black,
     'PROGRESS': Colors.black,
@@ -99,8 +99,8 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                     height: 45,
                     margin: EdgeInsets.only(left: 20, right: 20),
                     child: TextFormField(
-                      controller: taskDescController,
-                      keyboardType: TextInputType.multiline,
+                      controller: targetUnitsController,
+                      keyboardType: TextInputType.number,
                       maxLines: null,
                       style: const TextStyle(fontSize: 14),
                       decoration: InputDecoration(
@@ -242,14 +242,14 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                   InkWell(
                     onTap: () {
                       final taskName = taskNameController.text;
-                      final taskDesc = taskDescController.text;
+                      final targetUnits = targetUnitsController.text;
                       final taskTag = selectedValue;
                       if (taskName.isNotEmpty &&
-                          taskDesc.isNotEmpty &&
+                          targetUnits.isNotEmpty &&
                           taskTag.isNotEmpty) {
                         _addTasks(
                           taskName: taskName,
-                          taskDesc: taskDesc,
+                          targetUnits: targetUnits,
                           taskTag: taskTag,
                         ).then((value) {
                           Navigator.of(context).pop();
@@ -326,7 +326,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
 
   Future _addTasks(
       {required String taskName,
-      required String taskDesc,
+      required String targetUnits,
       required String taskTag}) async {
     DocumentReference docRef = await FirebaseFirestore.instance
         .collection('projects')
@@ -335,7 +335,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
         .add(
       {
         'taskName': taskName,
-        'taskDesc': taskDesc,
+        'targetUnits': targetUnits,
         'taskTag': taskTag,
         'startDate': selectedStartDate?.toUtc(),
         'endDate': selectedEndDate?.toUtc(),
@@ -356,7 +356,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
 
   void _clearAll() {
     taskNameController.clear();
-    taskDescController.clear();
+    targetUnitsController.clear();
     setState(() {
       selectedValue = '';
       selectedStartDate = null;
