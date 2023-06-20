@@ -17,9 +17,9 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
   final TextEditingController taskNameController = TextEditingController();
   final TextEditingController taskDescController = TextEditingController();
   final Map<String, Color> taskTags = {
-    'To START': Color.fromRGBO(225, 225, 225, 1),
-    'PROGRESS': Color.fromRGBO(255, 251, 161, 1),
-    'DONE': Colors.green,
+    'To START': Colors.black,
+    'PROGRESS': Colors.black,
+    'DONE': Colors.black,
   };
   late String selectedValue = '';
   DateTime? selectedStartDate;
@@ -29,8 +29,11 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('New Task'),
-        centerTitle: true,
+        foregroundColor: Colors.black,
+        title: const Text('New Task', style: TextStyle(color: Colors.black)),
+        centerTitle: false,
+        backgroundColor: Color(0xFFF6F8FD),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
