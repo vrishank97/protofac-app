@@ -36,6 +36,42 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
     super.dispose();
   }
 
+  Future<void> _storeActualDates(
+      {DateTime? actualStart, DateTime? actualEnd}) async {
+    Map<String, dynamic> updateData = {};
+
+    if (actualStart != null) {
+      updateData['actualStart'] = Timestamp.fromDate(actualStart);
+    }
+    if (actualEnd != null) {
+      updateData['actualEnd'] = Timestamp.fromDate(actualEnd);
+    }
+
+    FirebaseFirestore.instance
+        .collection('projects')
+        .doc(widget.projectId)
+        .collection('tasks')
+        .doc(widget.taskId)
+        .update(updateData);
+  }
+
+  Future<void> _pickDate(BuildContext context, String dateType) async {
+    DateTime? pickedDate = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2100),
+    );
+
+    if (pickedDate != null) {
+      if (dateType == 'actualStart') {
+        await _storeActualDates(actualStart: pickedDate);
+      } else if (dateType == 'actualEnd') {
+        await _storeActualDates(actualEnd: pickedDate);
+      }
+    }
+  }
+
   Future<void> _fetchCompletedUnits() async {
     try {
       DocumentSnapshot taskSnapshot = await FirebaseFirestore.instance
@@ -228,9 +264,8 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                           if (snapshot.connectionState ==
                                   ConnectionState.active &&
                               snapshot.hasData) {
-                            Timestamp? expectedStartTimestamp =
-                                (snapshot.data!.data()
-                                    as Map<String, dynamic>)['startDate'];
+                            Timestamp? expectedStartTimestamp = (snapshot.data!
+                                .data() as Map<String, dynamic>)['startDate'];
                             String expectedStart =
                                 expectedStartTimestamp != null
                                     ? DateTime.fromMillisecondsSinceEpoch(
@@ -251,7 +286,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
 
                           return Text('Loading...');
                         },
-                      ),                
+                      ),
                       const SizedBox(
                         height: 12,
                       ),
@@ -281,9 +316,8 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                           if (snapshot.connectionState ==
                                   ConnectionState.active &&
                               snapshot.hasData) {
-                            Timestamp? expectedEndTimestamp =
-                                (snapshot.data!.data()
-                                    as Map<String, dynamic>)['endDate'];
+                            Timestamp? expectedEndTimestamp = (snapshot.data!
+                                .data() as Map<String, dynamic>)['endDate'];
                             String expectedEnd = expectedEndTimestamp != null
                                 ? DateTime.fromMillisecondsSinceEpoch(
                                         expectedEndTimestamp
@@ -291,7 +325,6 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                                     .toString()
                                     .substring(0, 10)
                                 : 'N/A';
-
                             return Text(
                               expectedEnd,
                               style: const TextStyle(
@@ -305,7 +338,6 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                           return Text('Loading...');
                         },
                       ),
-                      
                       const SizedBox(
                         height: 12,
                       ),
@@ -336,17 +368,43 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                       const SizedBox(
                         height: 12,
                       ),
-                      Text(
-                        'hello',
-                        // widget.task.actualStartDate
-                        // .toString()
-                        // .substring(0, 10),
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
-                      )
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: _fetchTaskData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          if (snapshot.connectionState ==
+                                  ConnectionState.active &&
+                              snapshot.hasData) {
+                            Timestamp? actualStartTimestamp = (snapshot.data!
+                                .data() as Map<String, dynamic>)['actualStart'];
+
+                            String actualStart = actualStartTimestamp != null
+                                ? DateTime.fromMillisecondsSinceEpoch(
+                                        actualStartTimestamp
+                                            .millisecondsSinceEpoch)
+                                    .toString()
+                                    .substring(0, 10)
+                                : 'Pick a date';
+
+                            return GestureDetector(
+                              onTap: () => _pickDate(context, 'actualStart'),
+                              child: Text(
+                                actualStart,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            );
+                          }
+
+                          return Text('Loading...');
+                        },
+                      ),
                     ],
                   ),
                   const SizedBox(
@@ -366,14 +424,43 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                       const SizedBox(
                         height: 12,
                       ),
-                      Text(
-                        'hello',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
-                      )
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: _fetchTaskData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          if (snapshot.connectionState ==
+                                  ConnectionState.active &&
+                              snapshot.hasData) {
+                            Timestamp? actualEndTimestamp = (snapshot.data!
+                                .data() as Map<String, dynamic>)['actualEnd'];
+
+                            String actualEnd = actualEndTimestamp != null
+                                ? DateTime.fromMillisecondsSinceEpoch(
+                                        actualEndTimestamp
+                                            .millisecondsSinceEpoch)
+                                    .toString()
+                                    .substring(0, 10)
+                                : 'Pick a date';
+
+                            return GestureDetector(
+                              onTap: () => _pickDate(context, 'actualEnd'),
+                              child: Text(
+                                actualEnd,
+                                style: const TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.w700,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            );
+                          }
+
+                          return Text('Loading...');
+                        },
+                      ),
                     ],
                   )
                 ],
