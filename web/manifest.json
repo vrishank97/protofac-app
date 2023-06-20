@@ -1,6 +1,6 @@
 {
-    "name": "protofac",
-    "short_name": "protofac",
+    "name": "new_protofac",
+    "short_name": "new_protofac",
     "start_url": ".",
     "display": "standalone",
     "background_color": "#0175C2",
