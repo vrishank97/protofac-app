@@ -39,7 +39,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(left: 16,right: 16,top: 50,bottom: 0),
         child: Form(
           child: Column(
             children: <Widget>[
@@ -80,7 +80,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                   ),
                 ],
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: taskDescController,
                 keyboardType: TextInputType.multiline,
