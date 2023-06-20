@@ -1,25 +1,21 @@
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
-class DeleteTaskPage extends StatefulWidget {
+class DeleteTaskPage extends StatelessWidget {
   final String projectId;
   final String taskId;
 
   DeleteTaskPage({required this.projectId, required this.taskId});
 
-  @override
-  _DeleteTaskPageState createState() => _DeleteTaskPageState();
-}
-
-class _DeleteTaskPageState extends State<DeleteTaskPage> {
-
-  void _DeleteTask() async {
+  void _deleteTask(BuildContext context) async {
     try {
       await FirebaseFirestore.instance
           .collection('projects')
-          .doc(widget.projectId)
+          .doc(projectId)
           .collection('tasks')
-          .doc(widget.taskId)
+          .doc(taskId)
           .delete();
       Navigator.pop(context);
       print('Task deleted successfully');
@@ -28,28 +24,24 @@ class _DeleteTaskPageState extends State<DeleteTaskPage> {
     }
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Padding(
-        padding: EdgeInsets.all(16.0),
-        child: Form(
-          child: Column(
-            children: [
-              TextField(
-                decoration: InputDecoration(labelText: 'Task Name'),
-              ),
-              TextField(
-                decoration: InputDecoration(labelText: 'Task Tag'),
-              ),
-              ElevatedButton(
-                onPressed: _DeleteTask,
-                child: Text('Delete Task'),
-              ),
-            ],
-          ),
-        ),
+@override
+Widget build(BuildContext context) {
+  return AlertDialog(
+    title: Text('Delete Task'),
+    content: Text('Are you sure you want to delete this task?'),
+    actions: <Widget>[
+      TextButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text('Cancel'),
       ),
-    );
-  }
+      TextButton(
+        onPressed: ()=> _deleteTask(context),
+        child: Text('Delete', style: TextStyle(color: Colors.red)),
+      ),
+    ],
+  );
+}
+ 
 }
