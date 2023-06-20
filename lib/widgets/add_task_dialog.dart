@@ -29,9 +29,11 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        foregroundColor: Colors.black,
         title: const Text('New Task', style: TextStyle(color: Colors.black)),
-        centerTitle: true,
-        backgroundColor: Colors.white,
+        centerTitle: false,
+        backgroundColor: Color(0xFFF6F8FD),
+        elevation: 0,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
