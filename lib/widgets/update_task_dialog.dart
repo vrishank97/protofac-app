@@ -47,7 +47,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
 
       if (taskSnapshot.exists) {
         double? completedUnits =
-            (taskSnapshot.data() as Map<String, dynamic>)?['completedUnits'];
+            (taskSnapshot.data() as Map<String, dynamic>)['completedUnits'];
         if (completedUnits != null) {
           _controller.text = completedUnits.toString();
         }
@@ -91,6 +91,15 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
     } catch (e) {
       print('Error updating completed units: $e');
     }
+  }
+
+  Stream<DocumentSnapshot> _fetchTaskData() {
+    return FirebaseFirestore.instance
+        .collection('projects')
+        .doc(widget.projectId)
+        .collection('tasks')
+        .doc(widget.taskId)
+        .snapshots();
   }
 
   void _updateTask() async {
@@ -209,14 +218,40 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                       const SizedBox(
                         height: 12,
                       ),
-                      Text(
-                        'hello',
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
-                      ),
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: _fetchTaskData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          if (snapshot.connectionState ==
+                                  ConnectionState.active &&
+                              snapshot.hasData) {
+                            Timestamp? expectedStartTimestamp =
+                                (snapshot.data!.data()
+                                    as Map<String, dynamic>)['startDate'];
+                            String expectedStart =
+                                expectedStartTimestamp != null
+                                    ? DateTime.fromMillisecondsSinceEpoch(
+                                            expectedStartTimestamp
+                                                .millisecondsSinceEpoch)
+                                        .toString()
+                                        .substring(0, 10)
+                                    : 'N/A';
+                            return Text(
+                              expectedStart,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black,
+                              ),
+                            );
+                          }
+
+                          return Text('Loading...');
+                        },
+                      ),                
                       const SizedBox(
                         height: 12,
                       ),
@@ -236,15 +271,41 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                       const SizedBox(
                         height: 12,
                       ),
-                      Text(
-                        'hello',
-                        // widget.task.end.toString().substring(0, 10),
-                        style: const TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: _fetchTaskData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          if (snapshot.connectionState ==
+                                  ConnectionState.active &&
+                              snapshot.hasData) {
+                            Timestamp? expectedEndTimestamp =
+                                (snapshot.data!.data()
+                                    as Map<String, dynamic>)['endDate'];
+                            String expectedEnd = expectedEndTimestamp != null
+                                ? DateTime.fromMillisecondsSinceEpoch(
+                                        expectedEndTimestamp
+                                            .millisecondsSinceEpoch)
+                                    .toString()
+                                    .substring(0, 10)
+                                : 'N/A';
+
+                            return Text(
+                              expectedEnd,
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black,
+                              ),
+                            );
+                          }
+
+                          return Text('Loading...');
+                        },
                       ),
+                      
                       const SizedBox(
                         height: 12,
                       ),
