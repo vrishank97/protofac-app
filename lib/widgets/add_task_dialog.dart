@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
@@ -15,7 +17,7 @@ class AddTaskAlertDialog extends StatefulWidget {
 
 class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
   final TextEditingController taskNameController = TextEditingController();
-  final TextEditingController taskDescController = TextEditingController();
+  final TextEditingController targetUnitsController = TextEditingController();
   final Map<String, Color> taskTags = {
     'To START': Colors.black,
     'PROGRESS': Colors.black,
@@ -28,80 +30,170 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         foregroundColor: Colors.black,
         title: const Text('New Task', style: TextStyle(color: Colors.black)),
         centerTitle: false,
-        backgroundColor: Color(0xFFF6F8FD),
+        backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.all(16.0),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 50, bottom: 0),
         child: Form(
           child: Column(
             children: <Widget>[
-              TextFormField(
-                controller: taskNameController,
-                style: const TextStyle(fontSize: 14),
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 20,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 25),
+                    child: Text(
+                      "Task Name",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Nunito'),
+                    ),
                   ),
-                  hintText: 'Task',
-                  hintStyle: const TextStyle(fontSize: 14),
-                  icon: const Icon(CupertinoIcons.square_list,
-                      color: Colors.brown),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+                  SizedBox(height: 10),
+                  Container(
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    height: 45,
+                    child: TextFormField(
+                      controller: taskNameController,
+                      style: const TextStyle(fontSize: 14),
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 30,
+                          vertical: 10,
+                        ),
+                        hintText: 'Add Task Name',
+                        hintStyle: const TextStyle(fontSize: 14),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-              const SizedBox(height: 15),
-              TextFormField(
-                controller: taskDescController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                style: const TextStyle(fontSize: 14),
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 20,
+              const SizedBox(height: 30),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 25),
+                    child: Text(
+                      "Target Units",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Nunito'),
+                    ),
                   ),
-                  hintText: 'Description',
-                  hintStyle: const TextStyle(fontSize: 14),
-                  icon: const Icon(CupertinoIcons.bubble_left_bubble_right,
-                      color: Colors.brown),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 45,
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    child: TextFormField(
+                      controller: targetUnitsController,
+                      keyboardType: TextInputType.number,
+                      maxLines: null,
+                      style: const TextStyle(fontSize: 14),
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 15,
+                        ),
+                        hintText: 'Add Number of Units to be completed',
+                        hintStyle: const TextStyle(fontSize: 14),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-              const SizedBox(height: 15),
-              ListTile(
-                leading:
-                    const Icon(CupertinoIcons.calendar, color: Colors.brown),
-                title: Text(
-                  selectedStartDate == null
-                      ? 'Select a start date'
-                      : 'Start Date: ${DateFormat('dd/MM/yyyy').format(selectedStartDate!)}',
-                  style: const TextStyle(fontSize: 14),
-                ),
-                onTap: () => _selectStartDate(context),
+              SizedBox(height: 30),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 25),
+                    child: Text(
+                      "Expected Dates",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Nunito'),
+                    ),
+                  ),
+                  SizedBox(height: 20),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: InkWell(
+                          onTap: () => _selectStartDate(context),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              border: Border.all(color: Colors.grey.shade300),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  selectedStartDate == null
+                                      ? 'Select a start date'
+                                      : 'Start Date: ${DateFormat('dd/MM/yyyy').format(selectedStartDate!)}',
+                                  style: TextStyle(fontSize: 11),
+                                ),
+                                const Icon(CupertinoIcons.calendar,
+                                    color: Colors.brown),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                      SizedBox(width: 10),
+                      Expanded(
+                        child: InkWell(
+                          onTap: () => _selectEndDate(context),
+                          child: Container(
+                            padding: EdgeInsets.symmetric(
+                                horizontal: 20, vertical: 10),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(40),
+                              border: Border.all(color: Colors.grey.shade300),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(
+                                  selectedEndDate == null
+                                      ? 'Select an end date'
+                                      : 'End Date: ${DateFormat('dd/MM/yyyy').format(selectedEndDate!)}',
+                                  style: TextStyle(fontSize: 11),
+                                ),
+                                const Icon(CupertinoIcons.calendar,
+                                    color: Colors.brown),
+                              ],
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              const SizedBox(height: 15),
-              ListTile(
-                leading:
-                    const Icon(CupertinoIcons.calendar, color: Colors.brown),
-                title: Text(
-                  selectedEndDate == null
-                      ? 'Select an end date'
-                      : 'End Date: ${DateFormat('dd/MM/yyyy').format(selectedEndDate!)}',
-                  style: const TextStyle(fontSize: 14),
-                ),
-                onTap: () => _selectEndDate(context),
-              ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 25),
               Row(
                 children: <Widget>[
                   const Icon(CupertinoIcons.tag, color: Colors.brown),
@@ -143,30 +235,21 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                   ),
                 ],
               ),
-              const SizedBox(height: 15),
+              const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.of(context).pop();
-                    },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.grey,
-                    ),
-                    child: const Text('Cancel'),
-                  ),
-                  ElevatedButton(
-                    onPressed: () {
+                  InkWell(
+                    onTap: () {
                       final taskName = taskNameController.text;
-                      final taskDesc = taskDescController.text;
+                      final targetUnits = targetUnitsController.text;
                       final taskTag = selectedValue;
                       if (taskName.isNotEmpty &&
-                          taskDesc.isNotEmpty &&
+                          targetUnits.isNotEmpty &&
                           taskTag.isNotEmpty) {
                         _addTasks(
                           taskName: taskName,
-                          taskDesc: taskDesc,
+                          targetUnits: targetUnits,
                           taskTag: taskTag,
                         ).then((value) {
                           Navigator.of(context).pop();
@@ -179,10 +262,32 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                         );
                       }
                     },
-                    style: ElevatedButton.styleFrom(
-                      primary: Colors.brown,
+                    child: Container(
+                      height: 45,
+                      width: 300,
+                      margin: EdgeInsets.only(left: 15),
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(40),
+                        gradient: LinearGradient(
+                          colors: [
+                            Color.fromRGBO(28, 105, 255, 1),
+                            Color.fromRGBO(66, 143, 255, 1),
+                          ],
+                          begin: Alignment.topLeft,
+                          end: Alignment.bottomRight,
+                        ),
+                      ),
+                      child: Center(
+                        child: Text(
+                          'Create Task',
+                          style: TextStyle(
+                            fontSize: 18,
+                            color: Colors.white,
+                            fontWeight: FontWeight.normal,
+                          ),
+                        ),
+                      ),
                     ),
-                    child: const Text('Add Task'),
                   ),
                 ],
               ),
@@ -221,7 +326,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
 
   Future _addTasks(
       {required String taskName,
-      required String taskDesc,
+      required String targetUnits,
       required String taskTag}) async {
     DocumentReference docRef = await FirebaseFirestore.instance
         .collection('projects')
@@ -230,7 +335,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
         .add(
       {
         'taskName': taskName,
-        'taskDesc': taskDesc,
+        'targetUnits': targetUnits,
         'taskTag': taskTag,
         'startDate': selectedStartDate?.toUtc(),
         'endDate': selectedEndDate?.toUtc(),
@@ -251,7 +356,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
 
   void _clearAll() {
     taskNameController.clear();
-    taskDescController.clear();
+    targetUnitsController.clear();
     setState(() {
       selectedValue = '';
       selectedStartDate = null;

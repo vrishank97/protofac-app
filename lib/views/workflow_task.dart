@@ -1,17 +1,21 @@
-// ignore_for_file: avoid_unnecessary_containers, prefer_const_constructors, non_constant_identifier_names
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, avoid_print, library_private_types_in_public_api, sized_box_for_whitespace
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:new_protofac/widgets/add_task_dialog.dart';
 import 'package:intl/intl.dart';
+import 'package:new_protofac/widgets/delete_task_dialog.dart';
+import 'package:new_protofac/widgets/update_task_dialog.dart';
 
 class TaskCard extends StatelessWidget {
+  final String projectId;
   final String taskId;
   final String taskName;
   final String taskTag;
   final String created_at;
 
   TaskCard({
+    required this.projectId,
     required this.taskId,
     required this.taskName,
     required this.taskTag,
@@ -99,11 +103,37 @@ class TaskCard extends StatelessWidget {
               ],
             ),
           ),
-          Icon(
-            Icons.arrow_forward_ios,
-            size: 14,
-            color: Colors.black,
+          InkWell(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => UpdateTaskPage(
+                          projectId: projectId,
+                          taskId: taskId,
+                        )),
+              );
+              print('Icon tapped');
+            },
+            child: Icon(
+              Icons.arrow_forward_ios,
+              size: 14,
+              color: Colors.black,
+            ),
           ),
+          IconButton(
+            icon: Icon(Icons.delete, color: Colors.red),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) => DeleteTaskPage(
+                          projectId: projectId,
+                          taskId: taskId,
+                        )),
+              );
+            },
+          )
         ],
       ),
     );
@@ -144,30 +174,28 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
                   ),
                   SizedBox(width: 10),
                   Text(
-                    'Workflows',                 
+                    'Workflows',
                     selectionColor: Colors.black,
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 20,
                       fontWeight: FontWeight.bold,
-                      
                     ),
                   ),
                   SizedBox(width: 48),
                 ],
               ),
             ),
-           
             Expanded(
               child: Container(
                 padding: EdgeInsets.all(16.0),
                 color: Color(0xFFF6F8FD),
-                child: FutureBuilder<QuerySnapshot>(
-                  future: FirebaseFirestore.instance
+                child: StreamBuilder<QuerySnapshot>(
+                  stream: FirebaseFirestore.instance
                       .collection('projects')
                       .doc(widget.projectId)
                       .collection('tasks')
-                      .get(),
+                      .snapshots(),
                   builder: (BuildContext context,
                       AsyncSnapshot<QuerySnapshot> snapshot) {
                     if (snapshot.hasError) {
@@ -189,11 +217,13 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
                             as Map<String, dynamic>;
 
                         return TaskCard(
+                          projectId: widget.projectId,
                           taskId: snapshot.data!.docs[index].id,
                           taskName: taskData['taskName'],
                           taskTag: taskData['taskTag'],
-                          created_at: DateFormat('dd/MM/yyyy')
-                              .format(taskData['created_at']?.toDate() ?? DateTime.now()),
+                          created_at: DateFormat('dd/MM/yyyy').format(
+                              taskData['created_at']?.toDate() ??
+                                  DateTime.now()),
                         );
                       },
                     );
@@ -206,13 +236,14 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
       ),
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
-         Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => AddTaskAlertDialog(projectId: widget.projectId),
-      ),
-    );
-          },// Update the onPressed to call _addNewProject
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  AddTaskAlertDialog(projectId: widget.projectId),
+            ),
+          );
+        }, // Update the onPressed to call _addNewProject
         icon: Icon(Icons.add),
         label: Text('Task'),
         backgroundColor: Color.fromRGBO(28, 105, 255, 1),

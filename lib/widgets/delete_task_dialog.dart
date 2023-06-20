@@ -1,96 +1,47 @@
+// ignore_for_file: prefer_const_constructors, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, avoid_print
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart';
 
-class DeleteTaskDialog extends StatefulWidget {
-  final String taskId, taskName;
+class DeleteTaskPage extends StatelessWidget {
+  final String projectId;
+  final String taskId;
 
-  const DeleteTaskDialog({Key? key, required this.taskId, required this.taskName}) : super(key: key);
-  @override
-  State<DeleteTaskDialog> createState() => _DeleteTaskDialogState();
-}
+  DeleteTaskPage({required this.projectId, required this.taskId});
 
-class _DeleteTaskDialogState extends State<DeleteTaskDialog> {
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      scrollable: true,
-      title: const Text(
-        'Delete Task',
-        textAlign: TextAlign.center,
-        style: TextStyle(fontSize: 16, color: Colors.brown),
-      ),
-      content: SizedBox(
-        child: Form(
-          child: Column(
-            children: <Widget>[
-              const Text(
-                'Are you sure you want to delete this task?',
-                style: TextStyle(fontSize: 14),
-              ),
-              const SizedBox(height: 15),
-              Text(
-                widget.taskName.toString(),
-                style: const TextStyle(fontSize: 14, fontWeight: FontWeight.bold),
-              ),
-              const SizedBox(height: 15),
-            ],
-          ),
-        ),
-      ),
-      actions: [
-        ElevatedButton(
-          onPressed: () {
-            Navigator.of(context, rootNavigator: true).pop();
-          },
-          style: ElevatedButton.styleFrom(
-            primary: Colors.grey,
-          ),
-          child: const Text('Cancel'),
-        ),
-        ElevatedButton(
-          onPressed: () {
-            _deleteTasks();
-            Navigator.of(context, rootNavigator: true).pop();
-          },
-          style: ElevatedButton.styleFrom(
-            primary: Colors.brown,
-          ),
-          child: const Text('Delete'),
-        ),
-      ],
-    );
+  void _deleteTask(BuildContext context) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection('projects')
+          .doc(projectId)
+          .collection('tasks')
+          .doc(taskId)
+          .delete();
+      Navigator.pop(context);
+      print('Task deleted successfully');
+    } catch (e) {
+      print('Error deleting task: $e');
+    }
   }
 
-  Future _deleteTasks() async {
-    var collection = FirebaseFirestore.instance.collection('tasks');
-    collection
-        .doc(widget.taskId)
-        .delete()
-        .then(
-          (_) => Fluttertoast.showToast(
-              msg: "Task deleted successfully",
-              toastLength: Toast.LENGTH_LONG,
-              gravity: ToastGravity.SNACKBAR,
-              backgroundColor: Colors.black54,
-              textColor: Colors.white,
-              fontSize: 14.0),
-        )
-        .catchError(
-          (error) => Fluttertoast.showToast(
-              msg: "Failed: $error",
-              toastLength: Toast.LENGTH_SHORT,
-              gravity: ToastGravity.SNACKBAR,
-              backgroundColor: Colors.black54,
-              textColor: Colors.white,
-              fontSize: 14.0),
-        );
-  }
+@override
+Widget build(BuildContext context) {
+  return AlertDialog(
+    title: Text('Delete Task'),
+    content: Text('Are you sure you want to delete this task?'),
+    actions: <Widget>[
+      TextButton(
+        onPressed: () {
+          Navigator.pop(context);
+        },
+        child: Text('Cancel'),
+      ),
+      TextButton(
+        onPressed: ()=> _deleteTask(context),
+        child: Text('Delete', style: TextStyle(color: Colors.red)),
+      ),
+    ],
+  );
 }
-
-// final collection = FirebaseFirestore.instance.collection('collection');
-// collection
-//     .doc('some_id') // <-- Doc ID to be deleted.
-// .delete() // <-- Delete
-//     .then((_) => print('Deleted'))
-// .catchError((error) => print('Delete failed: $error'));
+ 
+}
