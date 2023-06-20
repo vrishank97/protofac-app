@@ -1,3 +1,5 @@
+// ignore_for_file: prefer_const_constructors
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
@@ -28,11 +30,12 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         foregroundColor: Colors.black,
         title: const Text('New Task', style: TextStyle(color: Colors.black)),
         centerTitle: false,
-        backgroundColor: Color(0xFFF6F8FD),
+        backgroundColor: Colors.white,
         elevation: 0,
       ),
       body: SingleChildScrollView(
@@ -40,22 +43,42 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
         child: Form(
           child: Column(
             children: <Widget>[
-              TextFormField(
-                controller: taskNameController,
-                style: const TextStyle(fontSize: 14),
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 20,
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 25),
+                    child: Text(
+                      "Task Name",
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w400,
+                        fontFamily: 'Nunito'
+                      ),
+                    ),
                   ),
-                  hintText: 'Task',
-                  hintStyle: const TextStyle(fontSize: 14),
-                  icon: const Icon(CupertinoIcons.square_list,
-                      color: Colors.brown),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+                  SizedBox(height: 10),
+                  Container(
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    height: 45,
+                    child: TextFormField(
+                      controller: taskNameController,
+                      style: const TextStyle(fontSize: 14),
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 30,
+                          vertical: 10,
+                        ),
+                        hintText: 'Add Task Name',
+                        hintStyle: const TextStyle(fontSize: 14),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
               const SizedBox(height: 15),
               TextFormField(
