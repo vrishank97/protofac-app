@@ -39,7 +39,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
         elevation: 0,
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.only(left: 16,right: 16,top: 50,bottom: 0),
+        padding: const EdgeInsets.only(left: 16, right: 16, top: 50, bottom: 0),
         child: Form(
           child: Column(
             children: <Widget>[
@@ -51,11 +51,10 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                     child: Text(
                       "Task Name",
                       style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
-                        fontFamily: 'Nunito'
-                      ),
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Nunito'),
                     ),
                   ),
                   SizedBox(height: 10),
@@ -80,49 +79,88 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                   ),
                 ],
               ),
-              const SizedBox(height: 20),
-              TextFormField(
-                controller: taskDescController,
-                keyboardType: TextInputType.multiline,
-                maxLines: null,
-                style: const TextStyle(fontSize: 14),
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.symmetric(
-                    horizontal: 20,
-                    vertical: 20,
+              const SizedBox(height: 30),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 25),
+                    child: Text(
+                      "Target Units",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Nunito'),
+                    ),
                   ),
-                  hintText: 'Description',
-                  hintStyle: const TextStyle(fontSize: 14),
-                  icon: const Icon(CupertinoIcons.bubble_left_bubble_right,
-                      color: Colors.brown),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(15),
+                  SizedBox(height: 10),
+                  Container(
+                    height: 45,
+                    margin: EdgeInsets.only(left: 20, right: 20),
+                    child: TextFormField(
+                      controller: taskDescController,
+                      keyboardType: TextInputType.multiline,
+                      maxLines: null,
+                      style: const TextStyle(fontSize: 14),
+                      decoration: InputDecoration(
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20,
+                          vertical: 15,
+                        ),
+                        hintText: 'Add Number of Units to be completed',
+                        hintStyle: const TextStyle(fontSize: 14),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(40),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
+                ],
               ),
-              const SizedBox(height: 15),
-              ListTile(
-                leading:
-                    const Icon(CupertinoIcons.calendar, color: Colors.brown),
-                title: Text(
-                  selectedStartDate == null
-                      ? 'Select a start date'
-                      : 'Start Date: ${DateFormat('dd/MM/yyyy').format(selectedStartDate!)}',
-                  style: const TextStyle(fontSize: 14),
-                ),
-                onTap: () => _selectStartDate(context),
-              ),
-              const SizedBox(height: 15),
-              ListTile(
-                leading:
-                    const Icon(CupertinoIcons.calendar, color: Colors.brown),
-                title: Text(
-                  selectedEndDate == null
-                      ? 'Select an end date'
-                      : 'End Date: ${DateFormat('dd/MM/yyyy').format(selectedEndDate!)}',
-                  style: const TextStyle(fontSize: 14),
-                ),
-                onTap: () => _selectEndDate(context),
+              SizedBox(height: 30),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    padding: EdgeInsets.only(left: 25),
+                    child: Text(
+                      "Expected Dates",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Nunito'),
+                    ),
+                  ),
+                  SizedBox(height: 10),
+                  Row(
+                    children: [
+                      Expanded(
+                        child: ListTile(
+                          title: Text(
+                            selectedStartDate == null
+                                ? 'Select a start date'
+                                : 'Start Date: ${DateFormat('dd/MM/yyyy').format(selectedStartDate!)}',
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                          onTap: () => _selectStartDate(context),
+                        ),
+                      ),
+                      Expanded(
+                        child: ListTile(
+                          title: Text(
+                            selectedEndDate == null
+                                ? 'Select an end date'
+                                : 'End Date: ${DateFormat('dd/MM/yyyy').format(selectedEndDate!)}',
+                            style: const TextStyle(fontSize: 14),
+                          ),
+                          onTap: () => _selectEndDate(context),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
               const SizedBox(height: 15),
               Row(
