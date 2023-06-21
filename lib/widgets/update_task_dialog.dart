@@ -170,7 +170,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 105.0,
+        // toolbarHeight: 50.0,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         leading: IconButton(
@@ -181,7 +181,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
           color: Colors.black,
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
+        title: Text(
           'Task',
           style: TextStyle(
             color: Colors.black,
@@ -193,7 +193,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding:  EdgeInsets.only(left: 16,right: 16,top: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -228,8 +228,8 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                               snapshot.hasData) {
                             // Use data() method to get the data from the snapshot
                             Object? data = snapshot.data?.data();
-                            Timestamp? created_at = (snapshot.data!
-                                .data() as Map<String, dynamic>)['created_at'];
+                            Timestamp? created_at = (snapshot.data!.data()
+                                as Map<String, dynamic>)['created_at'];
                             String createdAt = created_at != null
                                 ? DateTime.fromMillisecondsSinceEpoch(
                                         created_at.millisecondsSinceEpoch)
@@ -238,7 +238,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                                 : '';
 
                             return Text(
-                             'Created_at : $createdAt',
+                              'Created_at : $createdAt',
                               style: const TextStyle(
                                 fontSize: 14,
                                 fontWeight: FontWeight.w700,
@@ -640,16 +640,22 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                 ],
               ),
               const Spacer(),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(28, 105, 255, 1),
-                  foregroundColor: const Color.fromRGBO(255, 255, 255, 1),
+              Container(
+                width: 300,
+                height: 85,
+                padding: EdgeInsets.only(bottom: 20, top: 20),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      backgroundColor: Color.fromRGBO(28, 105, 255, 1)),
+                  onPressed: () => _updateTask(),
+                  child: const Text('Update Task'),
                 ),
-                onPressed: () => _updateTask(),
-                child: const Text('Update Task'),
               ),
               const SizedBox(
-                height: 49,
+                height: 29,
               ),
             ],
           ),
