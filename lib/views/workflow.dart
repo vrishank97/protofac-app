@@ -78,10 +78,11 @@ class _ProjectsState extends State<Projects> {
                 builder: (BuildContext context, bool isEnabled, Widget? child) {
                   return Container(
                     width: 300,
+                    height: 45,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(50),
                         ),
                         backgroundColor: isEnabled
                             ? Color.fromRGBO(28, 105, 255, 1)

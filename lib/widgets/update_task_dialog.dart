@@ -166,6 +166,19 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
     }
   }
 
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'To Start':
+        return Colors.grey;
+      case 'In Progress':
+        return Colors.yellow;
+      case 'Done':
+        return Colors.green;
+      default:
+        return Colors.black;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -193,7 +206,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
       ),
       body: Center(
         child: Padding(
-          padding:  EdgeInsets.only(left: 16,right: 16,top: 16),
+          padding: EdgeInsets.only(left: 16, right: 16, top: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -204,7 +217,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                        StreamBuilder<DocumentSnapshot>(
+                      StreamBuilder<DocumentSnapshot>(
                         stream: _fetchTaskData(),
                         builder: (BuildContext context,
                             AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -214,19 +227,17 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                           if (snapshot.connectionState ==
                                   ConnectionState.active &&
                               snapshot.hasData) {
-                            String? taskname = (snapshot.data!
-                              .data() as Map<String, dynamic>)['taskName'];
+                            String? taskname = (snapshot.data!.data()
+                                as Map<String, dynamic>)['taskName'];
                             return Text(
-                              taskname! ,
+                              taskname!,
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
                                 color: Colors.black,
                               ),
                             );
-                            
                           }
-
                           return Text('Loading...');
                         },
                       ),
@@ -271,9 +282,10 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                   ),
                   Container(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        const EdgeInsets.symmetric(horizontal: 26, vertical: 7),
                     decoration: BoxDecoration(
-                      color: const Color.fromRGBO(225, 225, 225, 1),
+                      color: _getStatusColor(
+                          _getStatusText(_currentSlidervalue)),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Text(
@@ -281,7 +293,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 12,
-                        color: Color.fromRGBO(112, 112, 112, 1),
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -513,7 +525,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
 
                           return Text('Loading...');
                         },
-                      ),                
+                      ),
                     ],
                   )
                 ],
@@ -639,7 +651,6 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                               fontSize: 20.0,
                             ),
                           ),
-                          
                           child: Slider(
                             value: _currentSlidervalue,
                             min: 0,
@@ -649,17 +660,16 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                             // onChanged: (double newValue) {
                             //   setState(() {
                             //     _currentSlidervalue = newValue;
-                              
+
                             //   });
                             //   // onChanged:null,
                             // },
-                            onChanged:null,
+                            onChanged: null,
                           ),
                         ),
                       ),
                     ],
                   )
-                
                 ],
               ),
               const Spacer(),
