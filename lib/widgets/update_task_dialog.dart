@@ -596,14 +596,15 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 10,
+                        height: 30,
                       ),
                       Container(
                         child: SliderTheme(
                           data: SliderTheme.of(context).copyWith(
                             activeTrackColor: Colors.green,
+                            disabledActiveTrackColor: Colors.green,
                             inactiveTrackColor:
-                                const Color.fromRGBO(183, 183, 183, 1),
+                                Color.fromARGB(255, 183, 183, 183),
                             trackHeight: 24.0,
                             thumbColor: Colors.black,
                             thumbShape: const RoundSliderThumbShape(
@@ -621,6 +622,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                               fontSize: 20.0,
                             ),
                           ),
+                          
                           child: Slider(
                             value: _currentSlidervalue,
                             min: 0,
@@ -640,6 +642,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                       ),
                     ],
                   )
+                
                 ],
               ),
               const Spacer(),
