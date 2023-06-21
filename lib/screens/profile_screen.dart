@@ -1,22 +1,19 @@
-import 'package:flutter/material.dart';
-import 'package:protofac/locator.dart';
-import 'package:protofac/services/user_service.dart';
+import 'package:flutter/cupertino.dart';
 
-class ProfileScreen extends StatefulWidget {
-  const ProfileScreen({super.key});
+class Profile_screen extends StatefulWidget {
+  const Profile_screen({super.key});
 
   @override
-  State<ProfileScreen> createState() => _ProfileScreenState();
+  State<Profile_screen> createState() => _Profile_screenState();
 }
 
-class _ProfileScreenState extends State<ProfileScreen> {
-  final userService = getIt.get<UserService>();
-
+class _Profile_screenState extends State<Profile_screen> {
   @override
   Widget build(BuildContext context) {
-    var name = userService.getUser()!.displayName;
-    return Center(
-      child: Text("Welcome $name"),
+    return Container(
+      child: const Center(
+        child: Text('Profile '),
+      ),
     );
   }
 }
