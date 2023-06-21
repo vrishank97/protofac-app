@@ -599,7 +599,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                                   _totalUnits = null;
                                 }
                                 return Text(_totalUnits != null
-                                    ? '$_totalUnits'
+                                    ? '/$_totalUnits'
                                     : 'Nothing');
                               }
 
