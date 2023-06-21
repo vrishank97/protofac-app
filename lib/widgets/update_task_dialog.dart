@@ -627,11 +627,14 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                             max: _totalUnits != null
                                 ? _totalUnits!.toDouble()
                                 : 100,
-                            onChanged: (double newValue) {
-                              setState(() {
-                                _currentSlidervalue = newValue;
-                              });
-                            },
+                            // onChanged: (double newValue) {
+                            //   setState(() {
+                            //     _currentSlidervalue = newValue;
+                              
+                            //   });
+                            //   // onChanged:null,
+                            // },
+                            onChanged:null,
                           ),
                         ),
                       ),
