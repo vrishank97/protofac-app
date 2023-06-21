@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors_in_immutables, use_build_context_synchronously, avoid_print, prefer_final_fields
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, use_key_in_widget_constructors, library_private_types_in_public_api, prefer_const_constructors_in_immutables, use_build_context_synchronously, avoid_print, prefer_final_fields, unused_local_variable, non_constant_identifier_names
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -156,11 +156,21 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
     }
   }
 
+  String _getStatusText(double currentSlidervalue) {
+    if (currentSlidervalue == 0) {
+      return 'To Start';
+    } else if (currentSlidervalue > 0 && currentSlidervalue < _totalUnits!) {
+      return 'In Progress';
+    } else {
+      return 'Done';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        toolbarHeight: 105.0,
+        // toolbarHeight: 50.0,
         backgroundColor: Colors.transparent,
         elevation: 0.0,
         leading: IconButton(
@@ -171,7 +181,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
           color: Colors.black,
           onPressed: () => Navigator.of(context).pop(),
         ),
-        title: const Text(
+        title: Text(
           'Task',
           style: TextStyle(
             color: Colors.black,
@@ -183,7 +193,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
       ),
       body: Center(
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16),
+          padding:  EdgeInsets.only(left: 16,right: 16,top: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -203,16 +213,42 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                           color: Colors.black,
                         ),
                       ),
-                      const SizedBox(
+                      SizedBox(
                         height: 7,
                       ),
-                      const Text(
-                        'Started at blah blah blah',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w400,
-                          color: Color.fromRGBO(129, 129, 129, 1),
-                        ),
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: _fetchTaskData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          if (snapshot.connectionState ==
+                                  ConnectionState.active &&
+                              snapshot.hasData) {
+                            // Use data() method to get the data from the snapshot
+                            Object? data = snapshot.data?.data();
+                            Timestamp? created_at = (snapshot.data!.data()
+                                as Map<String, dynamic>)['created_at'];
+                            String createdAt = created_at != null
+                                ? DateTime.fromMillisecondsSinceEpoch(
+                                        created_at.millisecondsSinceEpoch)
+                                    .toString()
+                                    .substring(0, 10)
+                                : '';
+
+                            return Text(
+                              'Created_at : $createdAt',
+                              style: const TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.w700,
+                                color: Colors.black,
+                              ),
+                            );
+                          }
+
+                          return Text('Loading...');
+                        },
                       ),
                     ],
                   ),
@@ -223,8 +259,8 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                       color: const Color.fromRGBO(225, 225, 225, 1),
                       borderRadius: BorderRadius.circular(5),
                     ),
-                    child: const Text(
-                      "TO START",
+                    child: Text(
+                      _getStatusText(_currentSlidervalue),
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 12,
@@ -560,14 +596,15 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                         ),
                       ),
                       const SizedBox(
-                        height: 10,
+                        height: 30,
                       ),
                       Container(
                         child: SliderTheme(
                           data: SliderTheme.of(context).copyWith(
                             activeTrackColor: Colors.green,
+                            disabledActiveTrackColor: Colors.green,
                             inactiveTrackColor:
-                                const Color.fromRGBO(183, 183, 183, 1),
+                                Color.fromARGB(255, 183, 183, 183),
                             trackHeight: 24.0,
                             thumbColor: Colors.black,
                             thumbShape: const RoundSliderThumbShape(
@@ -585,35 +622,46 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                               fontSize: 20.0,
                             ),
                           ),
+                          
                           child: Slider(
                             value: _currentSlidervalue,
                             min: 0,
                             max: _totalUnits != null
                                 ? _totalUnits!.toDouble()
                                 : 100,
-                            onChanged: (double newValue) {
-                              setState(() {
-                                _currentSlidervalue = newValue;
-                              });
-                            },
+                            // onChanged: (double newValue) {
+                            //   setState(() {
+                            //     _currentSlidervalue = newValue;
+                              
+                            //   });
+                            //   // onChanged:null,
+                            // },
+                            onChanged:null,
                           ),
                         ),
                       ),
                     ],
                   )
+                
                 ],
               ),
               const Spacer(),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color.fromRGBO(28, 105, 255, 1),
-                  foregroundColor: const Color.fromRGBO(255, 255, 255, 1),
+              Container(
+                width: 300,
+                height: 85,
+                padding: EdgeInsets.only(bottom: 20, top: 20),
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(50),
+                      ),
+                      backgroundColor: Color.fromRGBO(28, 105, 255, 1)),
+                  onPressed: () => _updateTask(),
+                  child: const Text('Update Task'),
                 ),
-                onPressed: () => _updateTask(),
-                child: const Text('Update Task'),
               ),
               const SizedBox(
-                height: 49,
+                height: 29,
               ),
             ],
           ),
