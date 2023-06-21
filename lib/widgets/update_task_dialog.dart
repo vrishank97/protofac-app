@@ -204,14 +204,31 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Task Name',
-                        // widget.task.name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
+                        StreamBuilder<DocumentSnapshot>(
+                        stream: _fetchTaskData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          if (snapshot.connectionState ==
+                                  ConnectionState.active &&
+                              snapshot.hasData) {
+                            String? taskname = (snapshot.data!
+                              .data() as Map<String, dynamic>)['taskName'];
+                            return Text(
+                              taskname! ,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            );
+                            
+                          }
+
+                          return Text('Loading...');
+                        },
                       ),
                       SizedBox(
                         height: 7,
@@ -496,7 +513,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
 
                           return Text('Loading...');
                         },
-                      ),
+                      ),                
                     ],
                   )
                 ],
