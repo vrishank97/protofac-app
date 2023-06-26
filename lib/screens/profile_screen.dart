@@ -66,7 +66,7 @@ class _ProfilePageState extends State<ProfilePage> {
                         CircleAvatar(
                           radius: 60,
                           backgroundImage:
-                              AssetImage(user?.photoURL??'assets/profile.png'),
+                              NetworkImage(user?.photoURL?? 'https://cdnb.artstation.com/p/assets/images/images/034/457/411/large/shin-min-jeong-.jpg?1612345193'),
                         )
                       ],
                     ),
