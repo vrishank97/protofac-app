@@ -85,10 +85,10 @@ packages:
     dependency: "direct main"
     description:
       name: dropdown_button2
-      sha256: "1b93954ad507350f4d60194304d8d45a12641ad1a968ef50d0f9ad2cd08d362c"
+      sha256: f8bc47d07d80eac2da5310cd6b849255070be64b96caaf794ddd18a57d040847
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.4"
+    version: "2.3.3"
   fake_async:
     dependency: transitive
     description:
