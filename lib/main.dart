@@ -3,7 +3,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/services.dart';
-import 'package:new_protofac/screens/main_screen.dart';
+import 'package:new_protofac/screens/SignIn_screen.dart';
 
 Future main() async {
   SystemChrome.setSystemUIOverlayStyle(
@@ -32,7 +32,7 @@ class _MyHomePageState extends State<MyHomePage> {
       theme: ThemeData(
         primarySwatch: Colors.brown,
       ),
-      home: Main_screen(),
+      home: SignInWithEmail(),
     );
   }
 }

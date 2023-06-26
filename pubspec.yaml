@@ -39,6 +39,8 @@ dependencies:
   fluttertoast: ^8.2.2
   dropdown_button2: ^2.1.4
   intl: ^0.18.1
+  firebase_auth: 
+  google_sign_in: 
 
 dev_dependencies:
   flutter_test:
