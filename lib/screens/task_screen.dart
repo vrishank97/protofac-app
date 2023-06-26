@@ -19,7 +19,7 @@ class _Task_screenState extends State<Task_screen> {
   List<Widget> _pages = [
   ProjectTasksPage(projectId: '', projectName: '',),
   Report_screen(),
-  Profile_screen(),
+  ProfilePage(),
 ];
 
   void _onItemTapped(int index) {
