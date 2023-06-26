@@ -105,28 +105,6 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
     }
   }
 
-  // Future<void> _signInWithGoogle() async {
-  //   try {
-  //     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-  //     if (googleUser != null) {
-  //       final GoogleSignInAuthentication googleAuth =
-  //           await googleUser.authentication;
-  //       final OAuthCredential credential = GoogleAuthProvider.credential(
-  //         accessToken: googleAuth.accessToken,
-  //         idToken: googleAuth.idToken,
-  //       );
-  //       await _auth.signInWithCredential(credential);
-  //       Navigator.pushReplacement(
-  //         context,
-  //         MaterialPageRoute(builder: (context) => Main_screen()),
-  //       );
-  //     }
-  //   } on FirebaseAuthException catch (e) {
-  //     print(e);
-  //     // Handle errors
-  //   }
-  // }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -137,7 +115,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
             children: [
               Image.asset(
                 'assets/Group.png',
-                height: 100,
+                height: 150,
                 // width: 500,
               ),
               // Wrap the Image.asset widget with Positioned and set the bottom property
