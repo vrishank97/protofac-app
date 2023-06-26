@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -203,14 +202,13 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                     onTap: () {
                       final taskName = taskNameController.text;
                       final targetUnits = targetUnitsController.text;
-                      final taskTag = selectedValue;
                       if (taskName.isNotEmpty &&
-                          targetUnits.isNotEmpty &&
-                          taskTag.isNotEmpty) {
+                          targetUnits.isNotEmpty
+                          ) 
+                          {
                         _addTasks(
                           taskName: taskName,
                           targetUnits: targetUnits,
-                          taskTag: taskTag,
                         ).then((value) {
                           Navigator.of(context).pop();
                         });
@@ -286,8 +284,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
 
   Future _addTasks(
       {required String taskName,
-      required String targetUnits,
-      required String taskTag}) async {
+      required String targetUnits}) async {
     DocumentReference docRef = await FirebaseFirestore.instance
         .collection('projects')
         .doc(widget.projectId)
@@ -296,7 +293,6 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
       {
         'taskName': taskName,
         'targetUnits': targetUnits,
-        'taskTag': taskTag,
         'startDate': selectedStartDate?.toUtc(),
         'endDate': selectedEndDate?.toUtc(),
         'created_at': DateTime.now().toLocal(),
