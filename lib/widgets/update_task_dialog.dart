@@ -14,7 +14,6 @@ class UpdateTaskPage extends StatefulWidget {
 }
 
 class _UpdateTaskPageState extends State<UpdateTaskPage> {
-  TextEditingController taskNameController = TextEditingController();
   TextEditingController taskTagController = TextEditingController();
   TextEditingController _controller = TextEditingController();
   double _currentSlidervalue = 0;
@@ -146,7 +145,6 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
           .collection('tasks')
           .doc(widget.taskId)
           .update({
-        'taskName': taskNameController.text,
         'taskTag': taskTagController.text,
       });
       Navigator.pop(context);
