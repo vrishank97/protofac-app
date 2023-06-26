@@ -1,6 +1,9 @@
-// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, use_build_context_synchronously
 
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:new_protofac/screens/SignIn_screen.dart';
 
 class ProfilePage extends StatefulWidget {
   const ProfilePage({super.key});
@@ -10,6 +13,19 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final GoogleSignIn _googleSignIn = GoogleSignIn();
+
+  Future<void> _signOut() async {
+    await _auth.signOut();
+    await _googleSignIn.signOut();
+    // Add any additional sign-out logic here
+       Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (context) => SignInWithEmail()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,7 +90,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           SizedBox(height: 180),
           InkWell(
-            onTap: () {},
+            onTap: _signOut,
             child: Container(
               padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
               margin: const EdgeInsets.symmetric(horizontal: 24),
