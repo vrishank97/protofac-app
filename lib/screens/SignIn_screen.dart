@@ -78,74 +78,54 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
 
   Future<void> _signInWithGoogle() async {
     try {
+      // Trigger the authentication flow
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
-      if (googleUser != null) {
-        final GoogleSignInAuthentication googleAuth =
-            await googleUser.authentication;
-        final OAuthCredential credential = GoogleAuthProvider.credential(
-          accessToken: googleAuth.accessToken,
-          idToken: googleAuth.idToken,
-        );
-        await _auth.signInWithCredential(credential);
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) => Main_screen()),
-        );
-      }
+
+      // Obtain the auth details from the request
+      final GoogleSignInAuthentication? googleAuth =
+          await googleUser?.authentication;
+
+      // Create a new credential
+      final credential = GoogleAuthProvider.credential(
+        accessToken: googleAuth?.accessToken,
+        idToken: googleAuth?.idToken,
+      );
+
+      // Sign in with the credential
+      await _auth.signInWithCredential(credential);
+
+      // Navigate to the main screen
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => Main_screen()),
+      );
     } on FirebaseAuthException catch (e) {
       print(e);
       // Handle errors
+      _showErrorDialog('Error', e.message ?? 'An error occurred.');
     }
   }
 
-  // @override
-  // Widget build(BuildContext context) {
-  //   return Scaffold(
-  //     appBar: AppBar(title: const Text('Sign in with Email')),
-  //     body: Padding(
-  //       padding: const EdgeInsets.all(16.0),
-  //       child: Column(
-  //         mainAxisAlignment: MainAxisAlignment.center,
-  //         children: [
-  //           TextField(
-  //             controller: _emailController,
-  //             decoration: const InputDecoration(
-  //               labelText: 'Email',
-  //               border: OutlineInputBorder(),
-  //             ),
-  //           ),
-  //           const SizedBox(height: 16),
-  //           TextField(
-  //             controller: _passwordController,
-  //             decoration: const InputDecoration(
-  //               labelText: 'Password',
-  //               border: OutlineInputBorder(),
-  //             ),
-  //             obscureText: true,
-  //           ),
-  //           const SizedBox(height: 16),
-  //           const SizedBox(height: 16),
-  //           ElevatedButton(
-  //             onPressed: _signInWithGoogle,
-  //             child: const Text('Sign in with Google'),
-  //           ),
-  //           Row(
-  //             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-  //             children: [
-  //               ElevatedButton(
-  //                 onPressed: _signIn,
-  //                 child: const Text('Sign in'),
-  //               ),
-  //               ElevatedButton(
-  //                 onPressed: _signUp,
-  //                 child: const Text('Sign up'),
-  //               ),
-  //             ],
-  //           ),
-  //         ],
-  //       ),
-  //     ),
-  //   );
+  // Future<void> _signInWithGoogle() async {
+  //   try {
+  //     final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
+  //     if (googleUser != null) {
+  //       final GoogleSignInAuthentication googleAuth =
+  //           await googleUser.authentication;
+  //       final OAuthCredential credential = GoogleAuthProvider.credential(
+  //         accessToken: googleAuth.accessToken,
+  //         idToken: googleAuth.idToken,
+  //       );
+  //       await _auth.signInWithCredential(credential);
+  //       Navigator.pushReplacement(
+  //         context,
+  //         MaterialPageRoute(builder: (context) => Main_screen()),
+  //       );
+  //     }
+  //   } on FirebaseAuthException catch (e) {
+  //     print(e);
+  //     // Handle errors
+  //   }
   // }
 
   @override
@@ -156,8 +136,12 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
         child: Center(
           child: Column(
             children: [
-              const SizedBox(height: 43),
-              Image.asset('images/logo.png'),
+              Image.asset(
+                'assets/Group.png',
+                height: 100,
+                // width: 500,
+              ),
+              // Wrap the Image.asset widget with Positioned and set the bottom property
               Expanded(
                   child: Container(
                       decoration: const BoxDecoration(
@@ -171,7 +155,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                           child: Column(
                             children: [
                               const SizedBox(
-                                height: 45,
+                                height: 20,
                               ),
                               const Text(
                                 'ProtoFac',
@@ -305,7 +289,7 @@ class _SignInWithEmailState extends State<SignInWithEmail> {
                                 height: 20,
                               ),
                               InkWell(
-                                onTap: () {},
+                                onTap: _signInWithGoogle,
                                 child: Container(
                                   padding: const EdgeInsets.symmetric(
                                       vertical: 12, horizontal: 40),
