@@ -1,7 +1,6 @@
 // ignore_for_file: prefer_const_constructors, curly_braces_in_flow_control_structures, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
@@ -141,7 +140,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                           onTap: () => _selectStartDate(context),
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
+                                horizontal: 15, vertical: 10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(40),
                               border: Border.all(color: Colors.grey.shade300),
@@ -153,7 +152,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                                   selectedStartDate == null
                                       ? 'Select a start date'
                                       : 'Start Date: ${DateFormat('dd/MM/yyyy').format(selectedStartDate!)}',
-                                  style: TextStyle(fontSize: 11),
+                                  style: TextStyle(fontSize: 10),
                                 ),
                                 const Icon(CupertinoIcons.calendar,
                                     color: Colors.brown),
@@ -162,13 +161,13 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                           ),
                         ),
                       ),
-                      SizedBox(width: 10),
+                      SizedBox(width: 5),
                       Expanded(
                         child: InkWell(
                           onTap: () => _selectEndDate(context),
                           child: Container(
                             padding: EdgeInsets.symmetric(
-                                horizontal: 20, vertical: 10),
+                                horizontal: 15, vertical: 10),
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(40),
                               border: Border.all(color: Colors.grey.shade300),
@@ -180,7 +179,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                                   selectedEndDate == null
                                       ? 'Select an end date'
                                       : 'End Date: ${DateFormat('dd/MM/yyyy').format(selectedEndDate!)}',
-                                  style: TextStyle(fontSize: 11),
+                                  style: TextStyle(fontSize: 10),
                                 ),
                                 const Icon(CupertinoIcons.calendar,
                                     color: Colors.brown),
@@ -194,47 +193,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                 ],
               ),
               const SizedBox(height: 25),
-              Row(
-                children: <Widget>[
-                  const Icon(CupertinoIcons.tag, color: Colors.brown),
-                  const SizedBox(width: 15.0),
-                  Expanded(
-                    child: DropdownButtonFormField2(
-                      decoration: InputDecoration(
-                        isDense: true,
-                        contentPadding: EdgeInsets.zero,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(15),
-                        ),
-                      ),
-                      isExpanded: true,
-                      hint: const Text(
-                        'Add a task tag',
-                        style: TextStyle(fontSize: 14),
-                      ),
-                      items: taskTags.entries
-                          .map(
-                            (entry) => DropdownMenuItem<String>(
-                              value: entry.key,
-                              child: Text(
-                                entry.key,
-                                style: TextStyle(
-                                  fontSize: 14,
-                                  color: entry.value,
-                                ),
-                              ),
-                            ),
-                          )
-                          .toList(),
-                      onChanged: (String? value) => setState(
-                        () {
-                          if (value != null) selectedValue = value;
-                        },
-                      ),
-                    ),
-                  ),
-                ],
-              ),
+              
               const SizedBox(height: 25),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -243,14 +202,13 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
                     onTap: () {
                       final taskName = taskNameController.text;
                       final targetUnits = targetUnitsController.text;
-                      final taskTag = selectedValue;
                       if (taskName.isNotEmpty &&
-                          targetUnits.isNotEmpty &&
-                          taskTag.isNotEmpty) {
+                          targetUnits.isNotEmpty
+                          ) 
+                          {
                         _addTasks(
                           taskName: taskName,
                           targetUnits: targetUnits,
-                          taskTag: taskTag,
                         ).then((value) {
                           Navigator.of(context).pop();
                         });
@@ -326,8 +284,7 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
 
   Future _addTasks(
       {required String taskName,
-      required String targetUnits,
-      required String taskTag}) async {
+      required String targetUnits}) async {
     DocumentReference docRef = await FirebaseFirestore.instance
         .collection('projects')
         .doc(widget.projectId)
@@ -336,7 +293,6 @@ class _AddTaskAlertDialogState extends State<AddTaskAlertDialog> {
       {
         'taskName': taskName,
         'targetUnits': targetUnits,
-        'taskTag': taskTag,
         'startDate': selectedStartDate?.toUtc(),
         'endDate': selectedEndDate?.toUtc(),
         'created_at': DateTime.now().toLocal(),

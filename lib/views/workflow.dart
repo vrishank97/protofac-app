@@ -1,6 +1,7 @@
 // ignore_for_file: no_leading_underscores_for_local_identifiers, prefer_const_constructors, sized_box_for_whitespace, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, prefer_const_literals_to_create_immutables
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:new_protofac/views/workflow_task.dart';
@@ -78,10 +79,11 @@ class _ProjectsState extends State<Projects> {
                 builder: (BuildContext context, bool isEnabled, Widget? child) {
                   return Container(
                     width: 300,
+                    height: 45,
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(16),
+                          borderRadius: BorderRadius.circular(50),
                         ),
                         backgroundColor: isEnabled
                             ? Color.fromRGBO(28, 105, 255, 1)
@@ -90,9 +92,13 @@ class _ProjectsState extends State<Projects> {
                       onPressed: isEnabled
                           ? () {
                               if (_titleController.text.isNotEmpty) {
+                                final currentUser =
+                                    FirebaseAuth.instance.currentUser;
                                 FirebaseFirestore.instance
                                     .collection('projects')
                                     .add({
+                                  'userId': currentUser!
+                                      .uid, // Add this line to store the user's ID
                                   'projectName': _titleController.text,
                                   'createdAt': FieldValue.serverTimestamp(),
                                   'updatedAt': FieldValue.serverTimestamp(),
@@ -130,7 +136,6 @@ class _ProjectsState extends State<Projects> {
               ),
             ),
           ),
-          
           Container(
             padding: const EdgeInsets.only(
               top: 50,
@@ -142,6 +147,7 @@ class _ProjectsState extends State<Projects> {
               StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('projects')
+                    .where('userId',isEqualTo: FirebaseAuth.instance.currentUser!.uid)
                     .snapshots(),
                 builder: (BuildContext context,
                     AsyncSnapshot<QuerySnapshot> snapshot) {

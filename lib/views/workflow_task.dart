@@ -11,14 +11,12 @@ class TaskCard extends StatelessWidget {
   final String projectId;
   final String taskId;
   final String taskName;
-  final String taskTag;
   final String created_at;
 
   TaskCard({
     required this.projectId,
     required this.taskId,
     required this.taskName,
-    required this.taskTag,
     required this.created_at,
   });
 
@@ -68,7 +66,7 @@ class TaskCard extends StatelessWidget {
                       borderRadius: BorderRadius.circular(16.0),
                     ),
                     child: Text(
-                      taskTag,
+                      'Task',
                       style: TextStyle(
                         color: Color(0xFF1C69FF),
                         fontWeight: FontWeight.w500,
@@ -220,7 +218,6 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
                           projectId: widget.projectId,
                           taskId: snapshot.data!.docs[index].id,
                           taskName: taskData['taskName'],
-                          taskTag: taskData['taskTag'],
                           created_at: DateFormat('dd/MM/yyyy').format(
                               taskData['created_at']?.toDate() ??
                                   DateTime.now()),

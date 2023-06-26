@@ -14,7 +14,6 @@ class UpdateTaskPage extends StatefulWidget {
 }
 
 class _UpdateTaskPageState extends State<UpdateTaskPage> {
-  TextEditingController taskNameController = TextEditingController();
   TextEditingController taskTagController = TextEditingController();
   TextEditingController _controller = TextEditingController();
   double _currentSlidervalue = 0;
@@ -146,7 +145,6 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
           .collection('tasks')
           .doc(widget.taskId)
           .update({
-        'taskName': taskNameController.text,
         'taskTag': taskTagController.text,
       });
       Navigator.pop(context);
@@ -163,6 +161,19 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
       return 'In Progress';
     } else {
       return 'Done';
+    }
+  }
+
+  Color _getStatusColor(String status) {
+    switch (status) {
+      case 'To Start':
+        return Colors.grey;
+      case 'In Progress':
+        return Colors.yellow;
+      case 'Done':
+        return Colors.green;
+      default:
+        return Colors.black;
     }
   }
 
@@ -193,7 +204,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
       ),
       body: Center(
         child: Padding(
-          padding:  EdgeInsets.only(left: 16,right: 16,top: 16),
+          padding: EdgeInsets.only(left: 16, right: 16, top: 16),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
@@ -204,14 +215,29 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Task Name',
-                        // widget.task.name,
-                        style: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.w700,
-                          color: Colors.black,
-                        ),
+                      StreamBuilder<DocumentSnapshot>(
+                        stream: _fetchTaskData(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<DocumentSnapshot> snapshot) {
+                          if (snapshot.hasError) {
+                            return Text('Error: ${snapshot.error}');
+                          }
+                          if (snapshot.connectionState ==
+                                  ConnectionState.active &&
+                              snapshot.hasData) {
+                            String? taskname = (snapshot.data!.data()
+                                as Map<String, dynamic>)['taskName'];
+                            return Text(
+                              taskname!,
+                              style: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                              ),
+                            );
+                          }
+                          return Text('Loading...');
+                        },
                       ),
                       SizedBox(
                         height: 7,
@@ -254,9 +280,10 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                   ),
                   Container(
                     padding:
-                        const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                        const EdgeInsets.symmetric(horizontal: 26, vertical: 7),
                     decoration: BoxDecoration(
-                      color: const Color.fromRGBO(225, 225, 225, 1),
+                      color: _getStatusColor(
+                          _getStatusText(_currentSlidervalue)),
                       borderRadius: BorderRadius.circular(5),
                     ),
                     child: Text(
@@ -264,7 +291,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                       style: TextStyle(
                         fontWeight: FontWeight.w700,
                         fontSize: 12,
-                        color: Color.fromRGBO(112, 112, 112, 1),
+                        color: Colors.black,
                       ),
                     ),
                   ),
@@ -570,7 +597,7 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                                   _totalUnits = null;
                                 }
                                 return Text(_totalUnits != null
-                                    ? '$_totalUnits'
+                                    ? '/$_totalUnits'
                                     : 'Nothing');
                               }
 
@@ -622,7 +649,6 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                               fontSize: 20.0,
                             ),
                           ),
-                          
                           child: Slider(
                             value: _currentSlidervalue,
                             min: 0,
@@ -632,17 +658,16 @@ class _UpdateTaskPageState extends State<UpdateTaskPage> {
                             // onChanged: (double newValue) {
                             //   setState(() {
                             //     _currentSlidervalue = newValue;
-                              
+
                             //   });
                             //   // onChanged:null,
                             // },
-                            onChanged:null,
+                            onChanged: null,
                           ),
                         ),
                       ),
                     ],
                   )
-                
                 ],
               ),
               const Spacer(),
