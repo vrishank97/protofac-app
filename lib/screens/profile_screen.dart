@@ -20,7 +20,7 @@ class _ProfilePageState extends State<ProfilePage> {
     await _auth.signOut();
     await _googleSignIn.signOut();
     // Add any additional sign-out logic here
-       Navigator.pushReplacement(
+    Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (context) => SignInWithEmail()),
     );
@@ -28,6 +28,7 @@ class _ProfilePageState extends State<ProfilePage> {
 
   @override
   Widget build(BuildContext context) {
+    User? user = _auth.currentUser;
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
@@ -40,77 +41,81 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ),
       ),
-      body: Column(
-        children: [
-          Container(
-            height: 200,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.only(
-                bottomLeft: Radius.circular(30),
-                bottomRight: Radius.circular(30),
-              ),
-            ),
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  SizedBox(height: 30),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      CircleAvatar(
-                        radius: 50,
-                        backgroundImage: NetworkImage(
-                            'https://example.com/profile_picture.jpg'),
-                      )
-                    ],
-                  ),
-                  Spacer(),
-                  Center(
-                    child: Text(
-                      'John Doe',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 14,
-                          fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                  Center(
-                    child: Text(
-                      'johndoe@example.com',
-                      style: TextStyle(color: Colors.black, fontSize: 14),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          SizedBox(height: 180),
-          InkWell(
-            onTap: _signOut,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 40),
-              margin: const EdgeInsets.symmetric(horizontal: 24),
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              // height: 250,
               decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(16),
-                  border: Border.all(color: Colors.blueAccent)),
-              child: const Center(
-                child: Text(
-                  "Sign Out",
-                  style: TextStyle(
-                    color: Colors.lightBlue,
-                    fontWeight: FontWeight.w700,
-                    fontSize: 16,
-                  ),
+                color: Colors.white,
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(30),
+                  bottomRight: Radius.circular(30),
+                ),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    SizedBox(height: 30),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        CircleAvatar(
+                          radius: 60,
+                          backgroundImage:
+                              AssetImage(user?.photoURL??'assets/profile.png'),
+                        )
+                      ],
+                    ),
+                    SizedBox(height: 40),
+                    Center(
+                      child: Text(
+                        user?.displayName ?? '',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold),
+                      ),
+                    ),
+                    SizedBox(height: 10),
+                    Center(
+                      child: Text(
+                        user?.email ?? 'johndoe@example.com',
+                        style: TextStyle(color: Colors.black, fontSize: 16),
+                      ),
+                    ),
+                    SizedBox(height: 150),
+                    InkWell(
+                      onTap: _signOut,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            vertical: 12, horizontal: 40),
+                        margin: const EdgeInsets.symmetric(horizontal: 24),
+                        decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(16),
+                            border: Border.all(color: Colors.blueAccent)),
+                        child: const Center(
+                          child: Text(
+                            "Sign Out",
+                            style: TextStyle(
+                              color: Colors.lightBlue,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
