@@ -6,6 +6,7 @@ import 'package:new_protofac/widgets/add_task_dialog.dart';
 import 'package:intl/intl.dart';
 import 'package:new_protofac/widgets/delete_task_dialog.dart';
 import 'package:new_protofac/widgets/update_task_dialog.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class TaskCard extends StatelessWidget {
   final String projectId;
@@ -153,6 +154,21 @@ class ProjectTasksPage extends StatefulWidget {
 }
 
 class _ProjectTasksPageState extends State<ProjectTasksPage> {
+
+  void _shareWorkflow(BuildContext context) async {
+    // Construct the URL with the workflow ID
+    String url = 'https://adminapp.com/workflow?workflowId=';
+
+    // Open the URL in the user's default web browser
+    if (await canLaunch(url)) {
+      await launch(url);
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Unable to launch URL')),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -183,6 +199,44 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
                   SizedBox(width: 48),
                 ],
               ),
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Container(
+                  width: 200,
+                  child: Text(
+                    "Design 200 Tshirts for Protofac",
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.black,
+                    ),
+                  ),
+                ),
+                Spacer(),
+                InkWell(
+                  onTap: () => {} ,
+                  child: Container(
+                    padding: EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: Colors.transparent,
+                      borderRadius: BorderRadius.circular((10)),
+                      border: Border.all(
+                        color: Colors.blue,
+                        width: 2,
+                      )
+                    ),
+                    child: Text("Share",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w700,
+                      color: Colors.blue,
+                    ),
+                    ),
+                  ),
+                )
+              ],
             ),
             Expanded(
               child: Container(
