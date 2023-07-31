@@ -37,7 +37,7 @@ dependencies:
   cupertino_icons: ^1.0.2
   cloud_firestore: ^4.8.1
   fluttertoast: ^8.2.2
-  dropdown_button2: ^2.3.3
+  dropdown_button2: ^2.3.7
   intl: ^0.18.1
   firebase_auth: 
   google_sign_in:
