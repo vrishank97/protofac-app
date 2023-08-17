@@ -17,6 +17,7 @@ class ExpandableContainer extends StatefulWidget {
   });
 
   @override
+  // ignore: library_private_types_in_public_api
   _ExpandableContainerState createState() => _ExpandableContainerState();
 }
 
@@ -51,7 +52,7 @@ class _ExpandableContainerState extends State<ExpandableContainer> {
                   padding: const EdgeInsets.all(18.0),
                   child: Row(
                     children: [
-                      Expanded(
+                      const Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -92,7 +93,7 @@ class _ExpandableContainerState extends State<ExpandableContainer> {
               AnimatedCrossFade(
                 duration: const Duration(milliseconds: 300),
                 crossFadeState: _isExpanded ? CrossFadeState.showSecond : CrossFadeState.showFirst,
-                firstChild: SizedBox.shrink(),
+                firstChild: const SizedBox.shrink(),
                 secondChild: Container(
                   padding: const EdgeInsets.all(18.0),
                   child: Column(
@@ -124,14 +125,14 @@ class _ExpandableContainerState extends State<ExpandableContainer> {
                                   });
                                 }),
                             ),
-                      SizedBox(height: 14,),
+                      const SizedBox(height: 14,),
                       Row(
                         children: [
                           Container(
                             width: screenWidth * 0.36,
                             height: screenWidth* 0.2,
-                            color: Color.fromRGBO(239, 239, 239, 1),
-                            padding: EdgeInsets.all(8),
+                            color: const Color.fromRGBO(239, 239, 239, 1),
+                            padding: const EdgeInsets.all(8),
                             child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -156,12 +157,12 @@ class _ExpandableContainerState extends State<ExpandableContainer> {
                               
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Container(
                             width: screenWidth * 0.36,
                             height: screenWidth* 0.2,
-                            color: Color.fromRGBO(239, 239, 239, 1),
-                            padding: EdgeInsets.all(8),
+                            color: const Color.fromRGBO(239, 239, 239, 1),
+                            padding: const EdgeInsets.all(8),
                             child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -187,14 +188,14 @@ class _ExpandableContainerState extends State<ExpandableContainer> {
                           ),
                         ],
                       ),
-                      SizedBox(height: 14,),
+                      const SizedBox(height: 14,),
                       Row(
                         children: [
                           Container(
                             width: screenWidth * 0.36,
                             height: screenWidth* 0.2,
-                            color: Color.fromRGBO(239, 239, 239, 1),
-                            padding: EdgeInsets.all(8),
+                            color: const Color.fromRGBO(239, 239, 239, 1),
+                            padding: const EdgeInsets.all(8),
                             child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,
@@ -219,12 +220,12 @@ class _ExpandableContainerState extends State<ExpandableContainer> {
                               
                             ),
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Container(
                             width: screenWidth * 0.36,
                             height: screenWidth* 0.2,
-                            color: Color.fromRGBO(239, 239, 239, 1),
-                            padding: EdgeInsets.all(8),
+                            color: const Color.fromRGBO(239, 239, 239, 1),
+                            padding: const EdgeInsets.all(8),
                             child: const Center(
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.center,

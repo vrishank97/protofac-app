@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:protofacweb/components/container.dart';
+// ignore: depend_on_referenced_packages
 
 class MyWidget extends StatefulWidget {
   const MyWidget({super.key});
@@ -22,10 +22,10 @@ class _MyWidgetState extends State<MyWidget> {
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(horizontal: 20),
+                padding: const EdgeInsets.symmetric(horizontal: 20),
                 height: 132,
                 width: screenWidth,
-                color: Color.fromRGBO(169, 204, 255, 1),
+                color: const Color.fromRGBO(169, 204, 255, 1),
                 child: LayoutBuilder(
                   builder: (BuildContext context, BoxConstraints constraints) {
                     if (constraints.maxWidth > 600) {
@@ -35,10 +35,10 @@ class _MyWidgetState extends State<MyWidget> {
                           SvgPicture.asset(
                             'images/ProtoFac.svg',
                           ),
-                          Spacer(),
+                          const Spacer(),
                           Container(
-                            padding: EdgeInsets.symmetric(horizontal: 20,vertical: 12),
-                            color: Color.fromRGBO(28, 105, 255, 1),
+                            padding: const EdgeInsets.symmetric(horizontal: 20,vertical: 12),
+                            color: const Color.fromRGBO(28, 105, 255, 1),
                             
                             child: const Text("Create your own workflows",
                                 style: TextStyle(
@@ -64,18 +64,18 @@ class _MyWidgetState extends State<MyWidget> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    SizedBox(
+                    const SizedBox(
                       height: 40,
                     ),
-                    Text(
+                    const Text(
                       "Workflow for creating UI",
                       style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
-                    Text("Creator : Roman Rajeev"),
-                    SizedBox(
+                    const Text("Creator : Roman Rajeev"),
+                    const SizedBox(
                       height: 40,
                     ),
                     Center(
@@ -88,13 +88,13 @@ class _MyWidgetState extends State<MyWidget> {
                               Column(
                                 children: [
                                   Image.asset("images/Greenclock.png"),
-                                  VerticalDivider(
+                                  const VerticalDivider(
                                     color: Colors.black,
                                     width: 4,
                                   ),
                                 ],
                               ),
-                              Spacer(),
+                              const Spacer(),
                               ExpandableContainer(
                                 name: 'Task 1',
                                 time: 'Last Updated: 15th April 2022',
@@ -104,7 +104,7 @@ class _MyWidgetState extends State<MyWidget> {
                               ),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 20,
                           ),
                         ],

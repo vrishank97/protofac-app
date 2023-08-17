@@ -1,12 +1,11 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, non_constant_identifier_names, use_key_in_widget_constructors, prefer_const_constructors_in_immutables, avoid_print, library_private_types_in_public_api, sized_box_for_whitespace
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:new_protofac/widgets/add_task_dialog.dart';
 import 'package:intl/intl.dart';
+import 'package:new_protofac/widgets/add_task_dialog.dart';
 import 'package:new_protofac/widgets/delete_task_dialog.dart';
 import 'package:new_protofac/widgets/update_task_dialog.dart';
-import 'package:url_launcher/url_launcher.dart';
+import 'package:share_plus/share_plus.dart';
 
 class TaskCard extends StatelessWidget {
   final String projectId;
@@ -155,19 +154,17 @@ class ProjectTasksPage extends StatefulWidget {
 
 class _ProjectTasksPageState extends State<ProjectTasksPage> {
 
-  void _shareWorkflow(BuildContext context) async {
-    // Construct the URL with the workflow ID
-    String url = 'https://adminapp.com/workflow?workflowId=';
+  String constructShareUrl(String projectId) {
+  // Construct the URL using the project ID
+  return 'https://your-website.com/projects/$projectId';
+}
 
-    // Open the URL in the user's default web browser
-    if (await canLaunch(url)) {
-      await launch(url);
-    } else {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Unable to launch URL')),
-      );
-    }
-  }
+void _shareWorkflow(BuildContext context) async {
+  String projectId = widget.projectId;
+  String url = constructShareUrl(projectId);
+
+  await Share.share(url);
+}
 
   @override
   Widget build(BuildContext context) {
@@ -200,43 +197,47 @@ class _ProjectTasksPageState extends State<ProjectTasksPage> {
                 ],
               ),
             ),
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: 200,
-                  child: Text(
-                    "Design 200 Tshirts for Protofac",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.black,
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 40),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Container(
+                    width: 200,
+                    child: Text(
+                      widget.projectName,
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: Colors.black,
+                  
+                      ),
                     ),
                   ),
-                ),
-                Spacer(),
-                InkWell(
-                  onTap: () => {} ,
-                  child: Container(
-                    padding: EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.transparent,
-                      borderRadius: BorderRadius.circular((10)),
-                      border: Border.all(
+                  Spacer(),
+                  InkWell(
+                    onTap: () => {_shareWorkflow(context)} ,
+                    child: Container(
+                      padding: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.transparent,
+                        borderRadius: BorderRadius.circular((10)),
+                        border: Border.all(
+                          color: Colors.blue,
+                          width: 2,
+                        )
+                      ),
+                      child: Text("Share",
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w700,
                         color: Colors.blue,
-                        width: 2,
-                      )
+                      ),
+                      ),
                     ),
-                    child: Text("Share",
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w700,
-                      color: Colors.blue,
-                    ),
-                    ),
-                  ),
-                )
-              ],
+                  )
+                ],
+              ),
             ),
             Expanded(
               child: Container(
